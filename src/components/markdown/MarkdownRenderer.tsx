@@ -31,7 +31,7 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
     li: ({ node, ...props }: any) => <li className="[&>p]:mb-0 [&>p]:inline" {...props} />,
     blockquote: ({ node, ...props }: any) => <blockquote className="mb-8 bg-brand-50 dark:bg-brand-900/20 p-5 rounded-xl border-l-4 border-brand-500 italic" {...props} />,
     
-    // आपले वेगळे केलेले स्मार्ट कस्टम ब्लॉक्स
+    // आपले वेगळे केलेले स्मार्ट कस्टम ब्लॉक्स new1
     "lesson-section": LessonSection,
     "info-box": InfoBox,
     "takeaway-box": TakeawayBox,
