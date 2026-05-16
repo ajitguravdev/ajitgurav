@@ -5,10 +5,14 @@ import { Terminal, BookOpen, Code, Database } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { getDictionary } from "@/lib/dictionary";
 
-// params मधून 'lang' घेणे
-export default async function HomePage({ params }: { params: { lang: string } }) {
-  // भाषेनुसार डिक्शनरी आणणे
-  const dict = await getDictionary(params.lang as "en" | "mr" | "hi");
+// params आता Promise म्हणून घ्यावे लागतील
+export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
+  // १. params ला await करणे (हीच ती चूक होती जी आपण दुरुस्त केली!)
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang;
+
+  // २. आता योग्य lang (उदा. "en" किंवा "hi") डिक्शनरीला पास होईल
+  const dict = await getDictionary(lang as "en" | "mr" | "hi");
 
   return (
     <main className="flex-1 w-full px-4 sm:px-8 py-12 lg:py-24 max-w-7xl mx-auto">
@@ -17,7 +21,7 @@ export default async function HomePage({ params }: { params: { lang: string } })
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 font-medium text-sm mb-6 border border-brand-100 dark:border-brand-800">
           <Terminal className="w-4 h-4" />
           {/* डिक्शनरीमधून शब्द */}
-          {params.lang === "en"
+          {lang === "en"
             ? `${dict.home.welcome} ${siteConfig.name}`
             : `${siteConfig.name} ${dict.home.welcome}`}
         </div>
@@ -34,7 +38,7 @@ export default async function HomePage({ params }: { params: { lang: string } })
         </p>
 
         <Link
-          href={`/${params.lang}/computer-memory/intro`}
+          href={`/${lang}/computer-memory/intro`}
           className="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white transition-all duration-200 bg-brand-600 border border-transparent rounded-xl hover:bg-brand-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-600">
           {dict.home.cta}
         </Link>
@@ -44,7 +48,7 @@ export default async function HomePage({ params }: { params: { lang: string } })
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Subject Card 1 */}
         <Link
-          href={`/${params.lang}/computer-memory/intro`}
+          href={`/${lang}/computer-memory/intro`}
           className="group">
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-brand-300 dark:hover:border-brand-700 transition-all h-full">
             <div className="w-12 h-12 rounded-xl bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
