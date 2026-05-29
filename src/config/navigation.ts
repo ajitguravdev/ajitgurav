@@ -107,6 +107,6 @@ const computerMemory: SubjectConfig = {
 
 export const navigationConfig: NavigationConfig = {
   // order नुसार सॉर्ट करून एक्सपोर्ट करणे
-  subjects: [computerMemory].sort((a, b) => (a.order || 99) - (b.order || 99)),
+  subjects: [computerMemory, javascript].sort((a, b) => (a.order || 99) - (b.order || 99)),
   // subjects: [react, javascript, computerMemory].sort((a, b) => (a.order || 99) - (b.order || 99)),
 };

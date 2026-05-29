@@ -9,5 +9,5 @@ const dictionaries = {
 
 export const getDictionary = async (locale: 'en' | 'mr' | 'hi') => {
   // जर चुकीची भाषा आली तर default 'mr' वाचेल
-  return dictionaries[locale]?.() ?? dictionaries.en();
+  return dictionaries[locale]?.() ?? dictionaries.mr();
 };

@@ -1,55 +1,53 @@
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import MagicBox from "./MagicBox";
-
-// आपण बनवलेल्या नवीन फाईल्समधून कंपोनंट्स इम्पोर्ट करा
+import { UnicodeDiagram } from "./UnicodeDiagram";
 import { CodeRenderer } from "./CodeRenderer";
-import { 
-  LessonSection, 
-  InfoBox, 
-  TakeawayBox, 
-  GridContainer, 
-  GridCard, 
-  AlertBox 
-} from "./CustomBlocks";
+import { ListCards } from "./CustomBlocks"; // 🔴 बाकीचे Imports काढून टाकले, कारण ते आता CodeRenderer मध्ये जातात!
 
 interface MarkdownRendererProps {
   content: string;
+  lessonZones?: any; 
 }
 
-export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
-  
-  // TypeScript चा एरर घालवण्यासाठी आपण सर्व components एका 'any' प्रकारच्या डब्यात ठेवत आहोत.
+export default function MarkdownRenderer({ content, lessonZones }: MarkdownRendererProps) {
   const customComponents: any = {
-    // मूळ HTML टॅग्स
-    h2: ({ node, ...props }: any) => <h2 className="scroll-mt-24 text-2xl font-bold text-slate-900 dark:text-white mt-12 mb-6 pb-4 border-b border-slate-100 dark:border-slate-700" {...props} />,
-    h3: ({ node, ...props }: any) => <h3 className="scroll-mt-24 text-xl font-bold text-slate-800 dark:text-slate-200 mt-8 mb-4" {...props} />,
-    p: ({ node, ...props }: any) => <p className="mb-6 text-lg" {...props} />,
-    pre: ({ children }: any) => <>{children}</>,
-    ul: ({ node, ...props }: any) => <ul className="list-disc pl-6 mb-6 space-y-2 marker:text-brand-500 text-slate-700 dark:text-slate-300 text-lg" {...props} />,
-    ol: ({ node, ...props }: any) => <ol className="list-decimal pl-6 mb-6 space-y-2 marker:text-brand-500 text-slate-700 dark:text-slate-300 text-lg" {...props} />,
-    li: ({ node, ...props }: any) => <li className="[&>p]:mb-0 [&>p]:inline" {...props} />,
-    blockquote: ({ node, ...props }: any) => <blockquote className="mb-8 bg-brand-50 dark:bg-brand-900/20 p-5 rounded-xl border-l-4 border-brand-500 italic" {...props} />,
+    h1: (props: any) => <h1 className="text-[var(--brand-main)] font-semibold text-3xl uppercase tracking-wider" {...props} />,
+    h2: (props: any) => <h2 className=" text-[var(--text-main)] font-bold text-2xl" {...props} />,
+    h3: (props: any) => <h3 className="text-[var(--text-main)] font-semibold text-xl" {...props} />,
     
-    // आपले वेगळे केलेले स्मार्ट कस्टम ब्लॉक्स new2
-    "lesson-section": LessonSection,
-    "info-box": InfoBox,
-    "takeaway-box": TakeawayBox,
-    "grid-container": GridContainer,
-    "grid-card": GridCard,
-    "alert-box": AlertBox,
-    "magic-box": ({ children }: any) => <MagicBox>{children}</MagicBox>,
+    p: (props: any) => <p className="text-[var(--text-main)] leading-relaxed text-[17px]" {...props} />,
+    
+    ul: (props: any) => <ul className="text-[var(--text-main)] text-md" {...props} />,
+    ol: (props: any) => <ol className="text-[var(--text-main)] text-md" {...props} />,
 
-    // किचकट कोड आणि डायग्राम लॉजिक
-    code: CodeRenderer,
+    hr: (props: any) => <hr className="text-gray-600 mx-[-20px]" />,
+
+    li: (props: any) => <li className="[&>p]:inline" {...props} />,
+
+    blockquote: (props: any) => (
+      <blockquote className="p-4 sm:p-5 border-l-4 border-[var(--brand-main)] bg-[var(--bg-surface)] text-[var(--text-main)] italic rounded-r-xl shadow-sm">
+        <div className="font-medium leading-relaxed">
+          {props.children}
+        </div>
+      </blockquote>
+    ),
+
+    pre: ({ children }: any) => <>{children}</>,
+    "unicode-diagram": UnicodeDiagram,
+    code: ({ className, children, ...props }: any) => (
+      <CodeRenderer className={className} lessonZones={lessonZones} {...props}>
+        {children}
+      </CodeRenderer>
+    ),
+    "list-cards": ListCards,
   };
 
   return (
-    <ReactMarkdown
-      rehypePlugins={[rehypeRaw]}
-      components={customComponents}
-    >
-      {content}
-    </ReactMarkdown>
+    <div className="markdown-body">
+      <ReactMarkdown rehypePlugins={[rehypeRaw]} components={customComponents}>
+        {content}
+      </ReactMarkdown>
+    </div>
   );
 }

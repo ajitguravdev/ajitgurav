@@ -1,0 +1,105 @@
+<style>{`
+        /* =========================================
+           ✨ THE PERFECT MARKDOWN DESIGN SYSTEM ✨
+           (Based on Flexbox + Gap Architecture)
+           ========================================= */
+
+        /* 🔴 1. The Outer Container (मुख्य Wrapper) */
+        .markdown-body {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem; /* ~16px: सर्व P, UL, PRE मधील Default समान अंतर */
+          width: 100%;
+        }
+
+        /* 🔴 2. The Great Reset (सर्व Margin 0 करणे) */
+        .markdown-body > * {
+          margin-top: 0 !important;
+          margin-bottom: 0 !important;
+        }
+
+        /* 🔴 3. Headings Specific Margins (Visual Break) */
+        .markdown-body h2 {
+          margin-top: 2rem !important; /* H2 च्या वर जास्त जागा (नविन सेक्शन) */
+        }
+        .markdown-body h3 {
+          margin-top: 1.25rem !important; /* H3 च्या वर थोडी कमी जागा */
+        }
+
+        /* 🔴 4. List Gap Logic (li मधील अंतर) */
+        .markdown-body ul, 
+        .markdown-body ol {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem !important; /* 12px: दोन li टॅगमधील अंतर */
+        }
+
+
+        /* =========================================
+           🎨 COMPONENT COLORS & STYLING
+           ========================================= */
+
+        /* आलटून पालटून येणारे H2 रंग */
+        .mdx-h2:nth-of-type(4n+1) { color: var(--brand-main) !important; border-left-color: var(--brand-main) !important; }
+        .mdx-h2:nth-of-type(4n+2) { color: var(--color-info) !important; border-left-color: var(--color-info) !important; }
+        .mdx-h2:nth-of-type(4n+3) { color: var(--color-warning) !important; border-left-color: var(--color-warning) !important; }
+        .mdx-h2:nth-of-type(4n+4) { color: var(--color-success) !important; border-left-color: var(--color-success) !important; }
+
+        /* List Cards CSS Magic */
+        .list-cards-wrapper > ul {
+          display: grid !important;
+          gap: 1.25rem !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          list-style: none !important;
+        }
+        
+        @media (min-width: 768px) {
+          .list-cards-wrapper.md\\:grid-cols-2 > ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (min-width: 1024px) {
+          .list-cards-wrapper.lg\\:grid-cols-3 > ul { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+
+        .list-cards-wrapper > ul > li {
+          background-color: var(--bg-surface) !important;
+          border: 1px solid var(--border-base) !important;
+          border-radius: 0.75rem !important;
+          padding: 1.25rem !important;
+          margin: 0 !important;
+          box-shadow: var(--shadow-base) !important;
+          transition: all 0.3s ease !important;
+          // border-left-width: 4px !important;
+          display: flex;
+          flex-direction: column;
+        }
+        .list-cards-wrapper > ul > li:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-cards-wrapper > ul > li strong:first-child {
+          display: block;
+          font-size: 1rem;
+          margin-bottom: 0.5rem;
+          font-weight: 700;
+        }
+
+        .list-cards-wrapper > ul > li, .list-cards-wrapper > ul > li p {
+          color: var(--text-muted);
+          font-size: 0.88rem;
+          line-height: 1.6;
+          margin-top: 0 !important;
+          margin-bottom: 0 !important;
+        }
+
+        /* Alternating Colors */
+        .list-cards-wrapper > ul > li:nth-child(4n+1) strong:first-child { color: var(--brand-main) !important; }
+        
+        .list-cards-wrapper > ul > li:nth-child(4n+2) strong:first-child { color: var(--color-info) !important; }
+        
+        .list-cards-wrapper > ul > li:nth-child(4n+3) strong:first-child { color: var(--color-warning) !important; }
+        
+        .list-cards-wrapper > ul > li:nth-child(4n+4) strong:first-child { color: var(--color-success) !important; }
+      `}
+      </style>

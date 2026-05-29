@@ -1,0 +1,141 @@
+/* src/styles/tokens.css */
+
+@layer base {
+  :root {
+    /* ========================================= */
+    /* 1. Spacing & Radius Tokens (नवीन) */
+    /* ========================================= */
+    --space-sm: 0.5rem;   /* 8px */
+    --space-md: 1rem;     /* 16px (Markdown Gap) */
+    --space-lg: 1.5rem;   /* 24px */
+
+    --radius-sm: 0.25rem; /* 4px */
+    --radius-base: 0.5rem;/* 8px */
+    --radius-lg: 0.75rem; /* 12px (Alert Boxes / Cards) */
+
+    /* ========================================= */
+    /* 2. Background Levels (Tailwind Light Mode) */
+    /* ========================================= */
+    --bg-base: #ffffff;       /* Level 1: मुख्य पांढरा बॅकग्राउंड */
+    --bg-surface: #f8fafc;    /* Level 2: कार्ड्स, हेडर (Ultra Light Slate) */
+    --bg-elevated: #f1f5f9;   /* Level 3: ड्रॉपडाऊन, पॉपअप (Light Slate) */
+
+    /* ========================================= */
+    /* 3. Text Levels (Tailwind Light Mode) */
+    /* ========================================= */
+    --text-strong: #030712;   /* Level 1: मुख्य हेडिंग्ज आणि Bold शब्द (Deep Dark) */
+    --text-main: #364153;     /* Level 2: पाठातील रेग्युलर टेक्स्ट (Dark Gray) */
+    --text-muted: #6a7282;    /* Level 3: साईडबारचे टायटल्स, दुय्यम माहिती */
+    --text-inverse: #ffffff;  /* Level 4: गडद बॅकग्राउंडवरील मजकूर */
+
+    /* ========================================= */
+    /* 4. Borders & Shadows (Light Mode) */
+    /* ========================================= */
+    --border-base: rgba(0, 0, 0, 0.05);  /* साधी बॉर्डर (5% Opacity) */
+    --border-strong: rgba(0, 0, 0, 0.1); /* गडद बॉर्डर (10% Opacity) */
+    
+    --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.05); 
+    --shadow-elevated: 0 10px 15px -3px rgba(0, 0, 0, 0.1); 
+
+    /* ========================================= */
+    /* 5. Interactive States (Light Mode) */
+    /* ========================================= */
+    --bg-hover: rgba(0, 0, 0, 0.05);   
+    --bg-active: rgba(0, 0, 0, 0.1);   
+    --bg-disabled: #e2e8f0;   
+    --text-disabled: #94a3b8; 
+
+    /* ========================================= */
+    /* 6. Semantic Colors (Light Mode) */
+    /* (Tailwind 500 Series - Deep Colors) */
+    /* ========================================= */
+    --color-danger: #f43f5e;  /* Rose 500 */
+    --color-warning: #f59e0b; /* Amber 500 */
+    --color-success: #10b981; /* Emerald 500 */
+    --color-info: #6366f1;    /* Indigo 500 */
+
+    /* ========================================= */
+    /* 7. MDX Inline Code Blocks (Light Mode) */
+    /* ========================================= */
+    --inline-code-bg: #f1f5f9;
+    --inline-code-text: var(--color-danger);
+
+    /* ========================================= */
+    /* 8. Diagram Specific Highlights (कायमस्वरूपी डार्कसाठी) */
+    /* ========================================= */
+    --diagram-pink: #fb64b6;
+    --diagram-sky: #74d4ff;
+    --diagram-purple: #c4b4ff;
+    --diagram-mint: #96f7e4;
+    --diagram-rose: #ffa1ad;
+  }
+
+  .dark {
+    /* ========================================= */
+    /* 2. Background Levels (Tailwind Dark Mode) */
+    /* ========================================= */
+    --bg-base: #030712;       /* Level 1: Deep Rich Black (Tailwind Docs) */
+    --bg-surface: #10141e;    /* Level 2: कार्ड्स, हेडर */
+    --bg-elevated: #1c2029;   /* Level 3: ड्रॉपडाऊन, कोड ब्लॉक्स */
+
+    /* ========================================= */
+    /* 3. Text Levels (Tailwind Dark Mode) */
+    /* ========================================= */
+    --text-strong: #ffffff;   /* Level 1: मुख्य हेडिंग्ज आणि Bold शब्द (Pure White) */
+    --text-main: #d1d5dc;     /* Level 2: पाठातील रेग्युलर टेक्स्ट (Light Gray) */
+    --text-muted: #99a1af;    /* Level 3: साईडबारचे टायटल्स, दुय्यम माहिती */
+    --text-inverse: #030712;  /* Level 4: पांढऱ्या बॅकग्राउंडवरील मजकूर */
+
+    /* ========================================= */
+    /* 4. Borders & Shadows (Dark Mode) */
+    /* ========================================= */
+    --border-base: rgba(255, 255, 255, 0.1);  /* साधी बॉर्डर (10% Opacity) */
+    --border-strong: rgba(255, 255, 255, 0.2);/* गडद बॉर्डर (20% Opacity) */
+    
+    --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-elevated: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+
+    /* ========================================= */
+    /* 5. Interactive States (Dark Mode) */
+    /* ========================================= */
+    --bg-hover: rgba(255, 255, 255, 0.05);   
+    --bg-active: rgba(255, 255, 255, 0.1);   
+    --bg-disabled: #1e293b;   
+    --text-disabled: #475569; 
+
+    /* ========================================= */
+    /* 6. Semantic Colors (Dark Mode) */
+    /* (Tailwind 400 Series - Neon/Bright Colors) */
+    /* ========================================= */
+    --color-danger: #fb7185;  /* Rose 400 */
+    --color-warning: #fbbf24; /* Amber 400 */
+    --color-success: #34d399; /* Emerald 400 */
+    --color-info: #818cf8;    /* Indigo 400 */
+
+    /* ========================================= */
+    /* 7. MDX Inline Code Blocks (Dark Mode) */
+    /* ========================================= */
+    --inline-code-bg: #1c2029;
+    --inline-code-text: var(--diagram-rose);
+  }
+}
+
+/* ========================================= */
+/* 9. THE 4 BRAND THEMES (LIGHT MODE) */
+/* (Tailwind 500 Series) */
+/* ========================================= */
+:root[data-theme="teal"]   { --brand-main: #00bcff; --brand-light: #00bcff; }
+/* :root[data-theme="teal"]   { --brand-main: #14b8a6; --brand-light: #ccfbf1; } */
+:root[data-theme="blue"]   { --brand-main: #3b82f6; --brand-light: #dbeafe; }
+:root[data-theme="violet"] { --brand-main: #8b5cf6; --brand-light: #ede9fe; }
+:root[data-theme="amber"]  { --brand-main: #f59e0b; --brand-light: #fef3c7; }
+
+/* ========================================= */
+/* 9. THE 4 BRAND THEMES (DARK MODE) */
+/* (Tailwind 400 Series) */
+/* ========================================= */
+.dark[data-theme="teal"],   :root[data-theme="teal"].dark   { --brand-main: #00bcff; --brand-light: #00bcff; }
+/* .dark[data-theme="teal"],   :root[data-theme="teal"].dark   { --brand-main: #2dd4bf; --brand-light: #115e59; } */
+.dark[data-theme="blue"],   :root[data-theme="blue"].dark   { --brand-main: #60a5fa; --brand-light: #1e3a8a; }
+.dark[data-theme="violet"], :root[data-theme="violet"].dark { --brand-main: #a78bfa; --brand-light: #4c1d95; }
+.dark[data-theme="amber"],  :root[data-theme="amber"].dark  { --brand-main: #fbbf24; --brand-light: #78350f; }

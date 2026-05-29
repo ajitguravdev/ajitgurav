@@ -9,7 +9,13 @@
     "cta": "Explore Courses",
     "subject1_title": "CS Fundamentals",
     "subject1_desc": "Understand how memory, binary math, and CPU architecture work from the ground up.",
-    "coming_soon": "Coming Soon"
+    "coming_soon": "Coming Soon",
+
+
+    "subject_js_title": "JavaScript Internals",
+    "subject_js_desc": "V8 Engine, Event Loop & Promises",
+    "subject_ds_title": "Data Structures",
+    "subject_ds_desc": "Arrays, Linked Lists, Trees & Algorithms"
   },
   "about": {
     "title": "About",

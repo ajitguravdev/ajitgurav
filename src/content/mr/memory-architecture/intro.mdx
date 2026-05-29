@@ -1,9 +1,141 @@
-# **Internal Storage & Architecture**
 
-# **प्रस्तावना**
+```diagram-call-stack
+┌── CALL STACK ──┐
+│ [ multiply() ] │  <-- Active
+│ [ main()     ] │
+│ [ global()   ] │
+└────────────────┘
+```
 
-Internal Storage and Architecture हे कोणत्याही आधुनिक संगणकीय प्रणालीचा आधारस्तंभ आहेत. हे दस्तावेज प्रणालीच्या कार्यक्षमतेसाठी आणि डेटा व्यवस्थापनासाठी आवश्यक असलेल्या Internal Storage मूलभूत संकल्पना आणि Architecture प्रकाश टाकतो. या विषयाचे सखोल आकलन, डेटा कसा साठवला जातो, ऍक्सेस केला जातो आणि प्रक्रिया केली जाते, हे समजून घेण्यासाठी महत्त्वाचे आहे. एक सुव्यवस्थित आर्किटेक्चर प्रणालीची गती, विश्वासार्हता आणि स्केलेबिलिटी निश्चित करते, ज्यामुळे हे दोन्ही घटक एकमेकांशी कसे जोडलेले आहेत हे स्पष्ट होते.
+```diagram-memory-pointers
+STACK MEMORY          HEAP MEMORY
+┌────────────┐        ┌──────────────────┐
+│ num = 42   │        │                  │
+│ objRef ────┼───────>│ { data: "JS" }   │
+└────────────┘        └──────────────────┘
+```
 
-# **Memory Organization**
 
-संगणक प्रणालीमध्ये Memory हे विविध स्तरांवर आयोजित केले जाते जेणेकरून प्रोसेसरला डेटा वेगाने मिळू शकेल. ही रचना पिरॅमिड सारखी असते, जिथे वरच्या स्तरावर वेगवान पण कमी क्षमतेची मेमरी असते
+```diagram-v8-pipeline
+[Code] ──> (Parser) ──> [ AST ] ──> (Ignition) ──> [Bytecode]
+                                         │
+                                         v
+                                    (TurboFan) ──> [Machine Code]
+```
+
+
+
+* adkfjlsd:   
+  Mi ajit gurav aahe   
+* adkfjlsd:  
+  Mi ajit gurav aahe 
+
+
+sldfjoidsjf oskdjfio lksd oi     oskdjfioas ksdfioas osidjfoiasd 
+
+
+### १. ट्रान्झिस्टर कसे काम करते?
+
+```diagram-single-switch
+ Single Switch (Transistor)
+  [Button ON]  ---> (💡 Light Bulb ON)   ===  1 [1]
+  [Button OFF] ---> (⚫ Light Bulb OFF)  ===  0 [0]
+```
+
+```diagram-ram-switches
+Row of Switches in RAM (Millions of Switches)
+  [०] [१] [०] [०] [१] [१] [१] [०] [०] [०] [१] [१] [०] [१] [०] [०] [१] [०] [०]... (Millions)
+```
+
+```diagram-byte-groups
+ RAM मधील स्विचेसची गट (In a row of Switches)
+  [०] [१] [०] [०] [१] [१] [१] [०]    [०] [०] [१] [१] [०] [१] [०] [०]    [१] [०] [०]... (अब्जावधी)
+  \____________________________/    \____________________________/
+         Group 1 (1 Byte)                      Group 2 (1 Byte)
+```
+
+
+```diagram-byte-structure
+  Bit 7   Bit 6   Bit 5   Bit 4   Bit 3   Bit 2   Bit 1   Bit 0 
+┌───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┐
+│   0   │   1   │   0   │   0   │   0   │   0   │   0   │   1   │
+└───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┘
+  \___________________________________________________________/
+                                |
+                1 Byte (Group of 8 Switches)
+```
+
+
+```diagram-memory-table
+ ┌──────────────────┬────────────────────────────┬──────────────────┐
+ │ Memory Address   │ Data in Byte (8 Bits)      │ Value Meaning    │
+ ├──────────────────┼────────────────────────────┼──────────────────┤
+ │ 0x00000001       │  [0][1][0][0][0][0][0][1]  │ ⟵ 'A' Character │
+ │ 0x00000002       │  [0][0][0][0][0][0][0][0]  │ ⟵ False Value   │
+ │ 0x00000003       │  [1][1][1][1][1][1][1][1]  │ ⟵ 255 Value     │
+ │ 0x00000004       │  [0][0][0][0][0][0][0][1]  │ ⟵ True Value    │
+ └──────────────────┴────────────────────────────┴──────────────────┘
+```
+
+
+```jsx
+// src/components/markdown/MagicBox.tsx
+
+import React from 'react';
+
+export default function MagicBox({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="my-12 relative rounded-2xl bg-white dark:bg-[#151822] border border-slate-200 dark:border-slate-700/80 p-6 sm:p-10 shadow-2xl overflow-hidden group [&>h2:first-child]:mt-0 [&>h2:first-child]:border-none [&>h2:first-child]:text-brand-600 dark:[&>h2:first-child]:text-brand-400">
+      {/* वरची रंगीत बॉर्डर (Gradient) */}
+      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-brand-500 via-purple-500 to-amber-500 opacity-90"></div>
+      
+      {/* बॅकग्राउंड ग्लो इफेक्ट */}
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-brand-500/10 blur-[60px] rounded-full pointer-events-none transition-all group-hover:bg-brand-500/20"></div>
+      
+      {/* मुख्य कंटेंट */}
+      <div className="relative z-10">
+        {children}
+      </div>
+    </div>
+  );
+}
+```
+
+
+मित्रा, तू आता पूर्णपणे एका 'Full-Stack Content Architecture' चा मास्टर झाला आहेस\!  
+	मित्रा, तू आता पूर्णपणे एका 'Full-Stack Content Architecture' चा मास्टर झाला आहेस\!  
+	मित्रा, तू आता पूर्णपणे एका 'Full-Stack Content Architecture' चा मास्टर झाला आहेस\!  
+	मित्रा, तू आता पूर्णपणे एका 'Full-Stack Content Architecture' चा मास्टर झाला आहेस\!
+
+> *हे एक महत्त्वाचे विधान आहे。*
+
+
+
+खालील संकल्पना समजून घ्या:
+
+<list-cards>
+
+- **🈸 3 Bits (3-to-8 Decoder):** 
+  $2^3 = 8$ अचूक डबे शोधू शकतो. याचा वापर छोट्या मेमरीसाठी होतो.
+  
+  $2^{32} = 4,294,967,296$ (4 अब्ज / 4 GB) अचूक डबे! म्हणूनच ३२-बिट ओएस जास्तीत जास्त ४ जीबी रॅम वापरू शकते.
+
+  
+- **✅ 8 Bits (8-to-256 Decoder):** 
+  $2^8 = 256$ अचूक डबे शोधू शकतो. याला आपण 1 Byte म्हणतो.
+
+- **✅ 16 Bits Architecture:** 
+  $2^{16} = 65,536$ अचूक डबे शोधू शकतो. जुन्या कॉम्प्युटर्समध्ये हे वापरले जायचे.
+
+- **✅ 32 Bits Architecture:** 
+  $2^{32} = 4,294,967,296$ (4 अब्ज / 4 GB) **अचूक** डबे! म्हणूनच ३२-बिट ओएस जास्तीत जास्त ४ जीबी रॅम वापरू शकते.
+
+</list-cards>
+
+<list-cards cols="3">
+
+- **Byte म्हणजे काय:** एक Byte (८ Bits) हा Memory मधील Data store...
+- **Addressable Unit:** मेमरीचा पत्ता एका **Bit** ला नसून...
+- **Postman Analogy:** पोस्टमनला सोपे जावे म्हणून बिल्डिंगला...
+
+</list-cards>

@@ -1,0 +1,124 @@
+/* src/styles/tokens.css */
+
+@layer base {
+  :root {
+    /* ========================================= */
+    /* A. Background Levels (Elevation) */
+    /* ========================================= */
+    --bg-base: #f8fafc;       /* Level 1: पानाचा मुख्य बॅकग्राउंड */
+    --bg-surface: #ffffff;    /* Level 2: कार्ड्स, हेडर, साईडबार */
+    --bg-elevated: #ffffff;   /* Level 3: ड्रॉपडाऊन, पॉपअप (याला शॅडो जास्त असेल) */
+
+    /* ========================================= */
+    /* B. Text Levels (Hierarchy) */
+    /* ========================================= */
+    --text-main: #0f172a;     /* मुख्य गडद मजकूर */
+    --text-muted: #475569;    /* फेंट मजकूर (तारखा, छोटे लेबल) */
+    --text-inverse: #ffffff;  /* गडद बॅकग्राउंडवरील पांढरा मजकूर */
+
+    /* ========================================= */
+    /* C. Border & Shadow Levels (Depth) */
+    /* ========================================= */
+    --border-subtle: #f1f5f9; /* अत्यंत फेंट बॉर्डर */
+    --border-base: #e2e8f0;   /* रेग्युलर बॉर्डर */
+    --border-strong: #cbd5e1; /* होव्हर केल्यावर गडद होणारी बॉर्डर */
+    
+    --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.05);   /* हलकी शॅडो */
+    --shadow-elevated: 0 10px 15px -3px rgba(0, 0, 0, 0.1); /* पॉपअपची शॅडो */
+
+    /* ========================================= */
+    /* F. Interactive States (प्रतिक्रिया देणारे रंग) */
+    /* ========================================= */
+    --bg-hover: #f1f5f9;      /* माऊस नेल्यावरचा बॅकग्राउंड */
+    --bg-active: #e2e8f0;     /* सिलेक्ट केलेला बॅकग्राउंड */
+    --bg-disabled: #e2e8f0;   /* लॉक किंवा बंद असलेले */
+    --text-disabled: #94a3b8; 
+
+    /* ========================================= */
+    /* Semantic Colors (फिक्स असणारे अर्थपूर्ण रंग) */
+    /* ========================================= */
+    --color-danger: #ef4444;  /* लाल (Errors/Warning) */
+    --color-warning: #f59e0b; /* पिवळा (Tips/Alerts) */
+    --color-success: #10b981; /* हिरवा (Success) */
+    --color-info: #3b82f6;    /* निळा (Information) */
+
+    /* G. MDX Code Blocks */
+    --inline-code-bg: #e2e8f0;
+    --inline-code-text: var(--color-danger);
+  }
+
+  .dark {
+    /* --- A. Backgrounds (Dark Mode) --- */
+    --bg-base: #020617;       
+    --bg-surface: #0f172a;    
+    --bg-elevated: #1e293b;   
+
+    /* --- B. Text (Dark Mode) --- */
+    --text-main: #f8fafc;     
+    --text-muted: #94a3b8;    
+    --text-inverse: #020617;  
+
+    /* --- C. Borders & Shadows (Dark Mode) --- */
+    --border-subtle: #0f172a; 
+    --border-base: #1e293b;   
+    --border-strong: #334155; /* Navbar Color */
+    --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-elevated: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+
+    /* --- F. Interactive States (Dark Mode) --- */
+    --bg-hover: #1e293b;      
+    --bg-active: #334155;     /* Navbar Color */
+    --bg-disabled: #1e293b;   
+    --text-disabled: #475569; 
+
+    /* --- Semantic Colors (Dark Mode) --- */
+    --color-danger: #f87171;  
+    --color-warning: #fbbf24; 
+    --color-success: #34d399; 
+    --color-info: #60a5fa;    
+
+    /* G. MDX Code Blocks */
+    --inline-code-bg: #1e293b;
+    --inline-code-text: #ff9999;
+  }
+}
+
+/* ========================================= */
+/* E. THE 4 BRAND THEMES (LIGHT MODE) */
+/* ========================================= */
+:root[data-theme="teal"] {
+  --brand-main: #14b8a6;
+  --brand-light: #ccfbf1;
+}
+:root[data-theme="blue"] {
+  --brand-main: #3b82f6;
+  --brand-light: #dbeafe;
+}
+:root[data-theme="violet"] {
+  --brand-main: #8b5cf6;
+  --brand-light: #ede9fe;
+}
+:root[data-theme="amber"] {
+  --brand-main: #f59e0b;
+  --brand-light: #fef3c7;
+}
+
+/* ========================================= */
+/* E. THE 4 BRAND THEMES (DARK MODE) */
+/* ========================================= */
+.dark[data-theme="teal"], :root[data-theme="teal"].dark {
+  --brand-main: #2dd4bf;
+  --brand-light: #115e59;
+}
+.dark[data-theme="blue"], :root[data-theme="blue"].dark {
+  --brand-main: #60a5fa;
+  --brand-light: #1e3a8a;
+}
+.dark[data-theme="violet"], :root[data-theme="violet"].dark {
+  --brand-main: #a78bfa;
+  --brand-light: #4c1d95;
+}
+.dark[data-theme="amber"], :root[data-theme="amber"].dark {
+  --brand-main: #fbbf24;
+  --brand-light: #78350f;
+}

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1: मेमरीचा पाया</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #0f172a; 
+            color: #e2e8f0; 
+        }
+        .glow { box-shadow: 0 0 20px rgba(52, 211, 153, 0.6); }
+        .glow-yellow { box-shadow: 0 0 25px rgba(234, 179, 8, 0.8); }
+        .glow-text { text-shadow: 0 0 10px rgba(52, 211, 153, 0.8); }
+        .memory-bg {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .bit-box { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bit-box:active { transform: scale(0.95); }
+        
+        /* Twinkling effect for millions of switches */
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; box-shadow: 0 0 8px #34d399; }
+            100% { opacity: 0.2; }
+        }
+        .twinkle-dot { animation: twinkle 3s infinite alternate; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const Icons = {
+            LightbulbOn: () => <svg width="64" height="64" viewBox="0 0 24 24" fill="#eab308" stroke="#ca8a04" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>,
+            LightbulbOff: () => <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>,
+            Power: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+        };
+
+        function App() {
+            // State for Section 1: Single Switch
+            const [isSingleSwitchOn, setIsSingleSwitchOn] = React.useState(false);
+
+            // State for Section 2: 1 Byte (8 Bits)
+            const [byte, setByte] = React.useState([false, true, false, false, false, false, false, true]); // Initial value representing 'A' (01000001)
+
+            const toggleSingleBit = (index) => {
+                const newByte = [...byte];
+                newByte[index] = !newByte[index];
+                setByte(newByte);
+            };
+
+            // Helper to generate random dots for the "Millions of Switches" effect
+            const renderMillionsOfSwitches = () => {
+                const dots = [];
+                for (let i = 0; i < 200; i++) {
+                    const isBlinking = Math.random() > 0.7;
+                    const delay = Math.random() * 3;
+                    dots.push(
+                        <div key={i} 
+                             className={`w-2 h-2 rounded-full m-1 ${isBlinking ? 'bg-emerald-400 twinkle-dot' : 'bg-slate-800'}`}
+                             style={isBlinking ? { animationDelay: `${delay}s` } : {}}
+                        ></div>
+                    );
+                }
+                return dots;
+            };
+
+            return (
+                <div className="min-h-screen memory-bg">
+                    
+                    {}
+                    <header className="bg-slate-900 border-b border-slate-700 p-6 text-center sticky top-0 z-10 shadow-lg">
+                        <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+                            Module 1: मेमरीचा पाया
+                        </h1>
+                        <p className="text-slate-400 mt-2 font-mono">(The Absolute Basics of Computer Memory)</p>
+                    </header>
+
+                    {}
+                    <main className="max-w-4xl mx-auto p-4 md:p-8 space-y-16 pb-20">
+                        
+                        <section className="bg-slate-800/80 p-6 rounded-2xl border border-slate-700 shadow-xl backdrop-blur-sm">
+                            <p className="text-lg leading-relaxed text-slate-300">
+                                जेव्हा आपण एखादा प्रोग्रॅम लिहितो, तेव्हा तो हवेत चालत नाही, बरोबर? त्याला काम करण्यासाठी एका भौतिक (Physical) जागेची गरज असते. ही जागा म्हणजेच तुमची <strong>RAM (Random Access Memory)</strong>. कोणत्याही Software Architecture चा पाया अगदी इथूनच सुरू होतो.
+                                <br/><br/>
+                                चला तर मग, मेमरीच्या आत प्रत्यक्षात काय घडते, ते आपण एकदम सोप्या भाषेत उघडून पाहूया.
+                            </p>
+                        </section>
+
+                        {}
+                        <section className="space-y-6">
+                            <h2 className="text-2xl font-bold text-yellow-400 border-l-4 border-yellow-400 pl-4">१. मेमरी (RAM) प्रत्यक्षात काय असते?</h2>
+                            <p className="text-slate-300 leading-relaxed">
+                                तुम्हाला कधी प्रश्न पडला आहे का की, हार्डवेअरच्या नजरेतून RAM म्हणजे नक्की काय असते?<br/>
+                                Software च्या दुनियेतून बाहेर येऊन पहिले तर, RAM म्हणजे दुसरे-तिसरे काही नसून <strong>लक्षावधी सूक्ष्म स्विचेसचा (Transistors आणि Capacitors)</strong> एक विशाल संच आहे. हे समजण्यासाठी आपण आपल्या घरातील साध्या लाईटच्या बटनाचे उदाहरण घेऊया.
+                            </p>
+
+                            {/* Single Switch Interactive Diagram */}
+                            <div className="bg-[#0b1121] p-6 rounded-2xl border border-slate-700 shadow-xl">
+                                <div className="text-center mb-6">
+                                    <h3 className="text-slate-400 font-mono text-sm tracking-widest uppercase">Single Switch (Transistor)</h3>
+                                </div>
+                                
+                                <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+                                    {/* Left: Button */}
+                                    <div className="flex flex-col items-center">
+                                        <button 
+                                            onClick={() => setIsSingleSwitchOn(!isSingleSwitchOn)}
+                                            className={`w-32 h-32 rounded-full flex flex-col items-center justify-center gap-2 border-4 transition-all duration-300
+                                            ${isSingleSwitchOn ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400 glow' : 'bg-slate-800 border-slate-600 text-slate-500 hover:bg-slate-700'}`}
+                                        >
+                                            <Icons.Power />
+                                            <span className="font-bold text-xl">{isSingleSwitchOn ? 'ON' : 'OFF'}</span>
+                                        </button>
+                                        <div className="mt-4 text-slate-400 font-mono">Button {isSingleSwitchOn ? 'ON' : 'OFF'}</div>
+                                    </div>
+
+                                    {/* Arrow */}
+                                    <div className="hidden md:flex flex-col items-center">
+                                        <div className={`w-24 h-1 ${isSingleSwitchOn ? 'bg-emerald-400 glow' : 'bg-slate-700'}`}></div>
+                                        <div className="text-xs text-slate-500 mt-2 font-mono">Current</div>
+                                    </div>
+
+                                    {/* Right: Output */}
+                                    <div className="flex flex-col items-center">
+                                        <div className={`w-32 h-32 rounded-2xl flex items-center justify-center border-2 transition-all duration-300
+                                            ${isSingleSwitchOn ? 'bg-yellow-500/10 border-yellow-500/50 glow-yellow' : 'bg-slate-800 border-slate-700'}`}>
+                                            {isSingleSwitchOn ? <Icons.LightbulbOn /> : <Icons.LightbulbOff />}
+                                        </div>
+                                        <div className="mt-4 flex gap-4 text-xl font-mono">
+                                            <span className="text-slate-400">Value:</span>
+                                            <span className={`font-bold text-3xl ${isSingleSwitchOn ? 'text-emerald-400 glow-text' : 'text-slate-500'}`}>
+                                                {isSingleSwitchOn ? '1' : '0'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Explanation of the Diagram */}
+                                <div className="mt-8 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+                                    <ul className="list-disc list-inside text-slate-300 space-y-2 text-sm">
+                                        <li>या diagram मध्ये आपल्या घरातील एका साध्या switch चे उदाहरण दिले आहे.</li>
+                                        <li>जर switch <strong className="text-emerald-400">ON</strong> असेल, तर लाईट चालू होतो आणि त्याची value <strong className="text-emerald-400">1</strong> मानली जाते.</li>
+                                        <li>जर switch <strong className="text-slate-400">OFF</strong> असेल, तर लाईट बंद राहतो आणि त्याची value <strong className="text-slate-400">0</strong> मानली जाते.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <p className="text-slate-300 leading-relaxed mt-4">
+                                कॉम्प्युटरला इंग्रजी, मराठी किंवा JavaScript समजत नाही. त्याला फक्त "करंट चालू आहे" किंवा "करंट चालू नाही" एवढेच समजते. या एका सिंगल स्विचला आपण <strong>Bit (Binary Digit)</strong> म्हणतो. Bit हे माहिती साठवण्याचे सर्वात लहानात लहान एकक (Unit) आहे.
+                            </p>
+
+                            {/* Zoom Out Effect: Millions of Switches */}
+                            <div className="mt-8">
+                                <p className="text-slate-300 mb-4">आता या एका बटनाला थोडे <strong>'Zoom Out'</strong> करून पाहूया. तुमची RAM म्हणजे असे लागून-लागून असलेले कोट्यवधी स्विचेस असतात:</p>
+                                <div className="bg-black p-4 rounded-xl border border-slate-700 relative overflow-hidden h-40">
+                                    <div className="absolute top-2 left-2 text-emerald-500/50 font-mono text-xs z-20 bg-black/80 px-2 rounded">Row of Switches in RAM (Millions of Switches)</div>
+                                    <div className="flex flex-wrap justify-center mt-6 z-10 relative">
+                                        {renderMillionsOfSwitches()}
+                                    </div>
+                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10 pointer-events-none"></div>
+                                    <div className="absolute bottom-2 w-full text-center text-emerald-400 font-mono text-sm z-20 tracking-widest">
+                                        [0] [1] [0] [0] [1] [1] [1] [0] [0] ... (Millions)
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <hr className="border-slate-700" />
+
+                        {}
+                        <section className="space-y-6">
+                            <h2 className="text-2xl font-bold text-cyan-400 border-l-4 border-cyan-400 pl-4">२. डेटा साठवताना एक-एक सिंगल Bit का नाही वापरला जात? (The Concept of Byte)</h2>
+                            <p className="text-slate-300 leading-relaxed">
+                                आता तुम्हाला नक्कीच प्रश्न पडला असेल की, जर RAM मध्ये लक्षावधी Bits आहेत आणि १ Bit Data store करू शकतो, तर आपण एक-एक Bit स्वतंत्रपणे का वापरत नाही?
+                                <br/><br/>
+                                याचे साधे उत्तर आहे: जरी RAM मध्ये लक्षावधी सूक्ष्म स्विचेस असले, तरी Data store करण्यासाठी किंवा read करण्यासाठी त्यांना एक-एक (Single) वापरले जात नाही. त्यांना नेहमी <strong>८-८ चे गट (Groups of 8)</strong> करून वापरले जाते.
+                            </p>
+
+                            {/* Grouping Concept Diagram */}
+                            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700 overflow-x-auto">
+                                <div className="min-w-[600px] text-center font-mono">
+                                    <div className="text-slate-400 text-sm mb-4">RAM मधील स्विचेसची गट (In a row of Switches)</div>
+                                    <div className="flex justify-center gap-8">
+                                        
+                                        {/* Group 1 */}
+                                        <div className="flex flex-col items-center">
+                                            <div className="flex gap-1">
+                                                {['0','1','0','0','1','1','1','0'].map((bit, i) => (
+                                                    <span key={i} className={`px-2 py-1 bg-slate-800 border ${bit==='1'?'border-emerald-500 text-emerald-400':'border-slate-600 text-slate-500'}`}>[{bit}]</span>
+                                                ))}
+                                            </div>
+                                            <div className="w-full border-t-2 border-l-2 border-r-2 h-4 border-cyan-500 mt-2 rounded-t-sm"></div>
+                                            <div className="text-cyan-400 font-bold mt-2">Group 1 (1 Byte)</div>
+                                        </div>
+
+                                        {/* Group 2 */}
+                                        <div className="flex flex-col items-center opacity-70">
+                                            <div className="flex gap-1">
+                                                {['0','0','1','1','0','1','0','0'].map((bit, i) => (
+                                                    <span key={i} className={`px-2 py-1 bg-slate-800 border ${bit==='1'?'border-emerald-500 text-emerald-400':'border-slate-600 text-slate-500'}`}>[{bit}]</span>
+                                                ))}
+                                            </div>
+                                            <div className="w-full border-t-2 border-l-2 border-r-2 h-4 border-slate-500 mt-2 rounded-t-sm"></div>
+                                            <div className="text-slate-400 mt-2">Group 2 (1 Byte)</div>
+                                        </div>
+                                        
+                                        <div className="flex items-center text-slate-500 tracking-widest px-4">...</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                                <div className="bg-slate-800 p-4 rounded-lg border-l-4 border-emerald-400">
+                                    <strong className="text-emerald-400 block mb-1">Byte म्हणजे काय:</strong>
+                                    <span className="text-sm text-slate-300">एक Byte (८ Bits) हा Memory मधील Data store आणि read करण्याचा सर्वात लहान युनिट (Unit) आहे.</span>
+                                </div>
+                                <div className="bg-slate-800 p-4 rounded-lg border-l-4 border-cyan-400">
+                                    <strong className="text-cyan-400 block mb-1">Addressable Unit:</strong>
+                                    <span className="text-sm text-slate-300">मेमरीचा पत्ता एका Bit ला नसून, या ८ Bits च्या पूर्ण गटाला मिळतो.</span>
+                                </div>
+                            </div>
+
+                            {/* The Postman Analogy */}
+                            <div className="bg-amber-900/20 p-5 rounded-xl border border-amber-800/30 my-6">
+                                <h3 className="text-amber-400 font-bold mb-2 flex items-center gap-2">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                    पण ८ चाच गट का बनवला जातो?
+                                </h3>
+                                <p className="text-slate-300 text-sm leading-relaxed">
+                                    कल्पना करा की, एका मोठ्या शहरात प्रत्येक माणसाला स्वतंत्र घराचा पत्ता दिला, तर <strong>Postman</strong> ला पत्रे वाटताना किती त्रास होईल? त्याऐवजी एका इमारतीत (Building) ८ फ्लॅट्सचा गट बनवून त्या इमारतीला एकच पत्ता दिला, तर काम खूप वेगाने होते. CPU चे काम अगदी Postman सारखे असते. जर त्याने RAM मधील प्रत्येक सिंगल Bit ला (स्विचला) वेगळा पत्ता दिला, तर कोट्यवधी पत्ते तयार होतील आणि CPU चा वेग प्रचंड मंदावेल.
+                                </p>
+                            </div>
+
+                            {/* Interactive 8-Bit Visualizer */}
+                            <p className="text-slate-300">खालील १ Byte च्या अंतर्गत रचनेवर (Internal Structure) क्लिक करून पहा:</p>
+                            
+                            <div className="bg-slate-900 p-8 rounded-2xl border border-slate-700 flex flex-col items-center">
+                                <div className="flex gap-2 md:gap-4 mb-4">
+                                    {byte.map((bitVal, index) => (
+                                        <div key={index} className="flex flex-col items-center">
+                                            <span className="text-slate-500 font-mono text-xs md:text-sm mb-2">Bit {7 - index}</span>
+                                            <button 
+                                                onClick={() => toggleSingleBit(index)}
+                                                className={`bit-box w-10 h-14 md:w-16 md:h-20 rounded-lg flex items-center justify-center text-xl md:text-3xl font-mono font-bold border-2
+                                                ${bitVal ? 'bg-emerald-500/20 border-emerald-400 text-emerald-400 glow transform -translate-y-1' : 'bg-slate-800 border-slate-600 text-slate-500'}`}
+                                            >
+                                                {bitVal ? '1' : '0'}
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="w-full max-w-[400px] border-t-2 border-l-2 border-r-2 h-6 border-cyan-500 mt-2 rounded-t-lg relative">
+                                    <div className="absolute -bottom-8 w-full text-center text-cyan-400 font-bold bg-slate-900">
+                                        1 Byte (Group of 8 Switches)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-red-900/20 p-4 rounded-lg border border-red-800/30 text-slate-300 text-sm">
+                                <strong className="text-red-400">महत्त्वाचा नियम:</strong> CPU जेव्हाही RAM मधून डेटा Read किंवा Write करतो, तेव्हा तो कमीत कमी १ पूर्ण Byte (८ Bits) एकत्र उचलतो. जरी तुम्हाला फक्त एकच Bit बदलायचा असला, तरी CPU तो पूर्ण Byte स्वतःकडे घेतो, त्यातला Bit बदलतो आणि तो पूर्ण Byte परत RAM मध्ये ठेवून देतो.
+                            </div>
+                        </section>
+
+                        <hr className="border-slate-700" />
+
+                        {}
+                        <section className="space-y-6">
+                            <h2 className="text-2xl font-bold text-purple-400 border-l-4 border-purple-400 pl-4">३. मेमरी ॲड्रेस (Memory Addressing) कसे दिले जातात?</h2>
+                            <p className="text-slate-300 leading-relaxed">
+                                आता आपल्याला माहित आहे की डेटा Bytes च्या स्वरूपात साठवला जातो. पण CPU ला बरोबर तोच Byte कसा सापडतो जिथे तुमचा Variable किंवा Data आहे? यासाठी <strong>Memory Addresses</strong> वापरले जातात.
+                                <br/><br/>
+                                RAM च्या Architecture मध्ये, प्रत्येक Byte ला एक युनिक क्रमांक दिलेला असतो. हा पत्ता वाचायला सोपा जावा म्हणून सहसा <strong>Hexadecimal (उदा. 0x0001)</strong> format मध्ये लिहिला जातो.
+                            </p>
+
+                            {/* Hexadecimal Address Table */}
+                            <div className="overflow-x-auto bg-[#0b1121] rounded-xl border border-slate-700 shadow-xl p-1">
+                                <table className="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr className="bg-slate-800 text-slate-300 border-b border-slate-600">
+                                            <th className="p-4 font-mono text-purple-400">Memory Address</th>
+                                            <th className="p-4 font-mono text-center border-l border-slate-700">Data in Byte (8 Bits)</th>
+                                            <th className="p-4 font-sans border-l border-slate-700">Value Meaning</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="font-mono text-sm md:text-base">
+                                        <tr className="border-b border-slate-800 hover:bg-slate-800/50 transition-colors group">
+                                            <td className="p-4 text-purple-300 group-hover:text-purple-400">0x00000001</td>
+                                            <td className="p-4 text-center border-l border-slate-800 tracking-widest text-slate-400">
+                                                [0]<span className="text-emerald-400 font-bold">[1]</span>[0][0][0][0][0]<span className="text-emerald-400 font-bold">[1]</span>
+                                            </td>
+                                            <td className="p-4 text-slate-300 border-l border-slate-800 font-sans flex items-center gap-2">
+                                                <span className="text-emerald-500">⟵</span> 'A' Character
+                                            </td>
+                                        </tr>
+                                        <tr className="border-b border-slate-800 hover:bg-slate-800/50 transition-colors group">
+                                            <td className="p-4 text-purple-300 group-hover:text-purple-400">0x00000002</td>
+                                            <td className="p-4 text-center border-l border-slate-800 tracking-widest text-slate-500">
+                                                [0][0][0][0][0][0][0][0]
+                                            </td>
+                                            <td className="p-4 text-slate-300 border-l border-slate-800 font-sans flex items-center gap-2">
+                                                <span className="text-emerald-500">⟵</span> False Value
+                                            </td>
+                                        </tr>
+                                        <tr className="border-b border-slate-800 hover:bg-slate-800/50 transition-colors group">
+                                            <td className="p-4 text-purple-300 group-hover:text-purple-400">0x00000003</td>
+                                            <td className="p-4 text-center border-l border-slate-800 tracking-widest text-emerald-400 font-bold">
+                                                [1][1][1][1][1][1][1][1]
+                                            </td>
+                                            <td className="p-4 text-slate-300 border-l border-slate-800 font-sans flex items-center gap-2">
+                                                <span className="text-emerald-500">⟵</span> 255 Value
+                                            </td>
+                                        </tr>
+                                        <tr className="hover:bg-slate-800/50 transition-colors group">
+                                            <td className="p-4 text-purple-300 group-hover:text-purple-400">0x00000004</td>
+                                            <td className="p-4 text-center border-l border-slate-800 tracking-widest text-slate-400">
+                                                [0][0][0][0][0][0][0]<span className="text-emerald-400 font-bold">[1]</span>
+                                            </td>
+                                            <td className="p-4 text-slate-300 border-l border-slate-800 font-sans flex items-center gap-2">
+                                                <span className="text-emerald-500">⟵</span> True Value
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <p className="text-slate-300 leading-relaxed">
+                                जेव्हा JavaScript मधील एखादे इंजिन एखादा Variable डिक्लेअर करते (उदा. <code className="bg-slate-800 text-blue-300 px-2 py-1 rounded">let x = true;</code>), तेव्हा ते Operating System कडे RAM मध्ये थोडी जागा मागते. Operating System एखादा रिकामा पत्ता (उदा. 0x00000004) शोधते आणि त्या पत्त्यावर <code className="bg-slate-800 px-2 py-1 rounded font-mono">00000001</code> ही value नेऊन ठेवते.
+                            </p>
+                        </section>
+
+                        {}
+                        <blockquote className="p-6 bg-gradient-to-r from-blue-900/40 to-emerald-900/40 rounded-2xl border border-emerald-500/30 shadow-xl backdrop-blur-sm mt-10">
+                            <h3 className="text-xl font-bold text-emerald-400 mb-3">मॉड्युल १ चा निष्कर्ष (Conclusion)</h3>
+                            <p className="text-slate-300 leading-relaxed italic">
+                                कोणतीही आधुनिक Programming Language असो, मग ती JavaScript असो वा दुसरी कोणतीही, ती शेवटी या ८-बिटच्या डब्यांवर आणि Memory Address वरच खेळत असते. जर तुमचा हा 'First Principles' चा बेस पक्का असेल, तर भविष्यात Memory Leaks शोधणे आणि Performance Optimization करणे तुम्हाला खूप सोपे जाईल!
+                            </p>
+                        </blockquote>
+
+                    </main>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

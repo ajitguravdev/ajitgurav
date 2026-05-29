@@ -1,97 +1,71 @@
+/* src/app/globals.css */
+
 @import "tailwindcss";
+@import "../styles/tokens.css";
+@import "../styles/mdx.css";
 
 @theme {
-  /* Fonts Setup */
-  --font-sans: var(--font-mukta), ui-sans-serif, system-ui;
-  --font-mono: var(--font-fira-code), ui-monospace, SFMono-Regular;
+  /* A. Backgrounds */
+  --color-base: var(--bg-base);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
 
-  /* Brand Colors Setup (Tailwind 4 Syntax) */
-  --color-brand-50: rgb(var(--brand-50));
-  --color-brand-400: rgb(var(--brand-400));
-  --color-brand-500: rgb(var(--brand-500));
-  --color-brand-600: rgb(var(--brand-600));
-  --color-brand-900: rgb(var(--brand-900));
+  /* B. Text */
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
+  --color-text-inverse: var(--text-inverse);
+  
+  /* C. Borders & Shadows */
+  --color-border-subtle: var(--border-subtle);
+  --color-border-base: var(--border-base);
+  --color-border-strong: var(--border-strong);
+  --shadow-base: var(--shadow-base);
+  --shadow-elevated: var(--shadow-elevated);
+
+  /* E. Brand Colors */
+  --color-brand-main: var(--brand-main);
+  --color-brand-light: var(--brand-light);
+
+  /* F. States & Semantics */
+  --color-bg-hover: var(--bg-hover);
+  --color-bg-active: var(--bg-active);
+  --color-danger: var(--color-danger);
+  --color-warning: var(--color-warning);
+  --color-success: var(--color-success);
+  --color-info: var(--color-info);
 }
 
-/* -------------------------------------------------------------------------- */
-/* १. ग्लोबल लाईट आणि डार्क मोड सेटिंग्स (हे संपूर्ण वेबसाईटचा बॅकग्राउंड बदलेल) */
-/* -------------------------------------------------------------------------- */
-/* body {
-  background-color: #ffffff; लाईट मोडमध्ये पांढरा बॅकग्राउंड
-  color: #0f172a; लाईट मोडमध्ये डार्क मजकूर (slate-900)
-  transition: background-color 0.3s ease, color 0.3s ease;
+/* ========================================= */
+/* K. GLOBAL POLISH & UTILITIES */
+/* ========================================= */
+@layer base {
+  /* मजकूर सिलेक्ट केल्यावर येणारा सुंदर ब्रँड कलर (Selection) */
+  ::selection {
+    background-color: var(--brand-light);
+    color: var(--brand-main);
+  }
 }
 
-html.dark body {
-  background-color: #0f111a; डार्क मोडमध्ये काळा/निळा बॅकग्राउंड
-  color: #f8fafc; डार्क मोडमध्ये पांढरा मजकूर (slate-50)
-} */
+@layer utilities {
+  /* D. Custom Scrollbar (सुंदर आणि बारीक स्क्रोलबार) */
+  .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { 
+    background: var(--border-strong); 
+    border-radius: 10px; 
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* -------------------------------------------------------------------------- */
-/* २. सर्व थीम्सचे कलर कोड्स (आता जांभळा आणि केशरी पण काम करतील!) */
-/* -------------------------------------------------------------------------- */
-
-:root[data-theme="teal"] {
-  --brand-50: 240, 253, 250;
-  --brand-400: 45, 212, 191;
-  --brand-500: 20, 184, 166;
-  --brand-600: 13, 148, 136;
-  --brand-900: 19, 78, 74;
+  /* Background Grid Pattern */
+  .bg-tech-grid {
+    background-size: 30px 30px;
+    background-image: 
+      linear-gradient(to right, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+  }
+  .dark .bg-tech-grid {
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  }
 }
-
-:root[data-theme="blue"] {
-  --brand-50: 239, 246, 255;
-  --brand-400: 96, 165, 250;
-  --brand-500: 59, 130, 246;
-  --brand-600: 37, 99, 235;
-  --brand-900: 30, 58, 138;
-}
-
-/* नवीन: जांभळा (Violet) थीम */
-:root[data-theme="violet"] {
-  --brand-50: 245, 243, 255;
-  --brand-400: 167, 139, 250;
-  --brand-500: 139, 92, 246;
-  --brand-600: 124, 58, 237;
-  --brand-900: 76, 29, 149;
-}
-
-/* नवीन: केशरी (Amber) थीम */
-:root[data-theme="amber"] {
-  --brand-50: 255, 251, 235;
-  --brand-400: 251, 191, 36;
-  --brand-500: 245, 158, 11;
-  --brand-600: 217, 119, 6;
-  --brand-900: 120, 53, 15;
-}
-
-/* -------------------------------------------------------------------------- */
-/* ३. स्क्रोलबार स्टाईल्स */
-/* -------------------------------------------------------------------------- */
-.code-container::-webkit-scrollbar { height: 8px; }
-.code-container::-webkit-scrollbar-track { background: #1f2937; border-radius: 4px; }
-.code-container::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
-
-.custom-scrollbar::-webkit-scrollbar { width: 6px; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-
-/* Mobile Sidebar classes */
-.sidebar-overlay {
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-.sidebar-overlay.active {
-    visibility: visible;
-    opacity: 1;
-}
-
-
-
-
-
-
-
-
-
-

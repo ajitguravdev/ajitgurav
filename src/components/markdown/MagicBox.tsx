@@ -1,4 +1,5 @@
 // src/components/markdown/MagicBox.tsx
+
 import React from 'react';
 
 export default function MagicBox({ children }: { children: React.ReactNode }) {

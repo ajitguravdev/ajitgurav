@@ -1,0 +1,179 @@
+@layer components {
+  /* =========================================
+     📝 TYPOGRAPHY & FONT FAMILY
+     ========================================= */
+  .markdown-body {
+    /* 'Mukta' लोड झाला नाही, तर तो सिस्टीमच्या डीफॉल्ट sans-serif ला जाईल */
+    font-family: 'Mukta', sans-serif; 
+  }
+
+  /* हेडिंग्जसाठी जर तुला वेगळा फॉन्ट नको असेल, तर हेडिंग्जही Mukta मध्येच दिसतील */
+  .markdown-body h1, 
+  .markdown-body h2, 
+  .markdown-body h3, 
+  .markdown-body h4, 
+  .markdown-body h5, 
+  .markdown-body h6 {
+    font-family: 'Mukta', sans-serif;
+  }
+
+  /* =========================================
+     ✨ THE PERFECT MARKDOWN DESIGN SYSTEM ✨
+     (Based on Flexbox + Gap Architecture)
+     ========================================= */
+
+  /* 1. The Outer Container */
+  .markdown-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem; 
+    width: 100%;
+  }
+
+  /* 2. The Great Reset */
+  .markdown-body > * {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* पाठातील सर्व पॅराग्राफ आणि लिस्ट्सना --text-main रंग देणे */
+  .markdown-body p, 
+  .markdown-body li {
+    color: var(--text-main);
+  }
+
+  /* Bold (strong) आणि Headings ना एकदम चमकदार --text-strong रंग देणे */
+  .markdown-body strong,
+  .markdown-body b {
+    color: var(--text-strong) !important;
+    font-weight: 600; /* अक्षरे व्यवस्थित ठळक दिसण्यासाठी */
+  }
+
+  .markdown-body h1, 
+  .markdown-body h2, 
+  .markdown-body h3 {
+    color: var(--text-strong) !important;
+  }
+
+  /* 3. Headings Specific Margins */
+  .markdown-body h2 {
+    margin-top: 2rem !important; 
+  }
+  .markdown-body h3 {
+    margin-top: 1.25rem !important;
+  }
+
+  /* 4. List Gap Logic */
+  .markdown-body ul, 
+  .markdown-body ol {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem !important; 
+  }
+
+  /* =========================================
+     🎨 COMPONENT COLORS & STYLING
+     ========================================= */
+
+  /* आलटून पालटून येणारे H2 रंग */
+  .mdx-h2:nth-of-type(4n+1) { color: var(--brand-main) !important; border-left-color: var(--brand-main) !important; }
+  .mdx-h2:nth-of-type(4n+2) { color: var(--color-info) !important; border-left-color: var(--color-info) !important; }
+  .mdx-h2:nth-of-type(4n+3) { color: var(--color-warning) !important; border-left-color: var(--color-warning) !important; }
+  .mdx-h2:nth-of-type(4n+4) { color: var(--color-success) !important; border-left-color: var(--color-success) !important; }
+
+  /* List Cards CSS Magic */
+  .list-cards-wrapper > ul {
+    display: grid !important;
+    gap: 1.25rem !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    list-style: none !important;
+  }
+  
+  @media (min-width: 768px) {
+    .list-cards-wrapper.md\:grid-cols-2 > ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1024px) {
+    .list-cards-wrapper.lg\:grid-cols-3 > ul { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  .list-cards-wrapper > ul > li {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-base) !important;
+    border-radius: 0.75rem !important;
+    padding: 1.25rem !important;
+    margin: 0 !important;
+    box-shadow: var(--shadow-base) !important;
+    transition: all 0.3s ease !important;
+    border-left-width: 4px !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .list-cards-wrapper > ul > li:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  .list-cards-wrapper > ul > li strong:first-child {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .list-cards-wrapper > ul > li, 
+  .list-cards-wrapper > ul > li p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Alternating Colors for Cards */
+  .list-cards-wrapper > ul > li:nth-child(4n+1) strong:first-child { color: var(--brand-main) !important; border-left-color: var(--brand-main) !important; }
+  .list-cards-wrapper > ul > li:nth-child(4n+2) strong:first-child { color: var(--color-info) !important; border-left-color: var(--color-info) !important; }
+  .list-cards-wrapper > ul > li:nth-child(4n+3) strong:first-child { color: var(--color-warning) !important; border-left-color: var(--color-warning) !important; }
+  .list-cards-wrapper > ul > li:nth-child(4n+4) strong:first-child { color: var(--color-success) !important; border-left-color: var(--color-success) !important; }
+}
+
+
+/* =========================================
+     📌 BULLET POINTS & LISTS FIX 
+     (Alerts आणि सर्वसाधारण Lists साठी)
+     ========================================= */
+
+  /* 1. Unordered Lists (ul) - Grid Cards सोडून इतर सर्व */
+  .markdown-body ul:not(.list-cards-wrapper > ul) {
+    list-style: none !important;
+    padding-left: 0.5rem !important;
+  }
+
+  /* 2. Custom Bullet (गोल डॉट) डिझाईन */
+  .markdown-body ul:not(.list-cards-wrapper > ul) > li {
+    position: relative;
+    padding-left: 1.5rem !important; /* बुलेट आणि टेक्स्ट मध्ये अंतर */
+    display: block !important; /* Tailwind चा reset फिक्स करण्यासाठी */
+  }
+
+  .markdown-body ul:not(.list-cards-wrapper > ul) > li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em; /* ओळीच्या बरोबर मध्यभागी */
+    height: 0.45rem;
+    width: 0.45rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--brand-main); /* ब्रँड कलरची रिंग */
+    background-color: transparent; /* (जर पूर्ण भरलेला डॉट हवा असेल तर इथे var(--brand-main) लिही) */
+  }
+
+  /* 3. Ordered Lists (ol - 1, 2, 3...) */
+  .markdown-body ol {
+    list-style-type: decimal !important;
+    padding-left: 1.5rem !important;
+  }
+  .markdown-body ol > li {
+    display: list-item !important;
+  }

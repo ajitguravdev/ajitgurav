@@ -1,0 +1,137 @@
+---
+title: "React Hooks"
+description: "React Hooks & The Physical Reality of V8 Closures"
+# thumbnail: "/images/3-bit-logic.png"
+# date: "2026-05-11"
+# order: 1
+---
+
+
+मित्रा, आता आपण **V8 Engine** च्या Core Architecture मधून बाहेर पडून प्रत्यक्ष Production Code (**React.js**) च्या जगात प्रवेश करत आहोत. React Developer ला नेहमी `useState`, `useEffect` आणि **Stale Closures** (जुना Data अडकणे) यांचा सामना करावा लागतो.
+
+पण जेव्हा आपण V8 Engine च्या **Heap Allocation, Context Objects आणि `[[Environment]]` Pointers** च्या चष्म्यातून React कडे पाहतो, तेव्हा हे सर्व 'Magic' नसून निव्वळ **Physical Memory Manipulation** असल्याचे समजते.
+
+> 🚀 **या Module मध्ये:** आपण React Hooks चे V8 Architecture मधील First Principles नुसार X-Ray (Post-mortem) करणार आहोत!
+
+---
+
+## ९.१ 🏗️ The Physical Render Cycle: React Component म्हणजे नक्की काय?
+
+React मध्ये आपण जेव्हा एखादा Component लिहितो, तेव्हा High-Level वर तो एक UI Block वाटतो, पण V8 Engine च्या CPU साठी ते फक्त एक **सामान्य JavaScript Function** असते.
+
+* 🟢 **The Render Instantiation:** जेव्हा React एखाद्या Component ला Render करते, तेव्हा Thread of Execution त्या Function ला Call करतो. लगेचच V8 Engine **Call Stack** वर त्या Component चा एक नवीन Stack Frame Push करते.
+* 🔴 **The Return & Pop Boundary:** Component च्या आत आपण Hooks Call करतो आणि शेवटी JSX Return करतो. जेव्हा Function Return होते, तेव्हा V8 चा RSP (Stack Pointer) खाली येतो आणि तो Stack Frame **0 Clock Cycles** मध्ये Pop (Destroy) होतो.
+* ⚠️ **The React Problem:** जर Stack Frame नष्ट झाला, तर Component मधील State (Data) कसा जिवंत राहतो?
+
+**येथे React Library आणि V8 Engine ची Closure Architecture एकत्र काम करतात.**
+
+---
+
+## ९.२ 💾 `useState` आणि Physical Escape Analysis
+
+React मधील State हा Component च्या Stack Frame वर कधीच नसतो. React स्वतःच्या Internal Architecture मध्ये (ज्याला **Fiber Tree** म्हणतात) एक Linked List वापरून **Heap Memory** मध्ये Data साठवते.
+
+पण जेव्हा आपण Event Handlers लिहितो, तेव्हा V8 चे **Escape Analysis** कसे काम करते ते पाहू:
+
+```javascript
+// === React & V8 Escape Analysis ===
+function CounterComponent() {
+    // 'count' Heap (React Fiber) मधून Stack वर येतो
+    const [count, setCount] = useState(0); 
+
+    // 'increment' Function Code मध्ये Evaluate होते
+    function increment() {
+        setCount(count + 1); // 'count' Escape झाला!
+    }
+
+    return <button onClick={increment}>Add</button>;
+}
+
+```
+
+### 🧠 Memory State & V8 Actions:
+
+1. **Escape Detection:** V8 चा Compiler पाहतो की `increment` हे Function बाहेर (React च्या DOM/Event Listener ला) Pass केले जात आहे. आणि ते आतून `count` ला मागत आहे.
+2. **Context Object Allocation:** Stack Frame Pop होणार हे V8 ला माहीत असते. त्यामुळे V8 Engine Heap Memory मध्ये एक **Context Object** बनवते आणि त्यात `count` ची Value (उदा. `0`) Store करते.
+3. **The Bind:** `increment` Function च्या `[[Environment]]` Slot मध्ये त्या Context Object चा Pointer Bind केला जातो.
+4. **The Pop:** `CounterComponent` चा Stack Frame Pop होतो. पण `increment` Function च्या Pointer मुळे `count` हा Heap मध्ये जिवंत राहतो.
+
+---
+
+## ९.३ 🪤 The "Stale Closure" Trap (The V8 Physical Truth)
+
+React मधील सर्वात भयानक बग म्हणजे **Stale Closure**. जेव्हा आपण `setTimeout` किंवा `setInterval` वापरतो, तेव्हा आपल्याला जुनीच State Value मिळते. हे का होते? याचे उत्तर V8 च्या **"Independent Memory Instances"** मध्ये लपलेले आहे.
+
+### 🐛 The Bug Code:
+
+```javascript
+function TimerComponent() {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            console.log("Count is:", count); // हा नेहमी 0 च का दाखवतो?
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []); // Empty Dependency Array
+    
+    // ... UI Code
+}
+
+```
+
+### 🔍 Physical Memory X-Ray (The "Why"):
+
+**Render 1 (Initial Call):** * React `TimerComponent` ला Call करते.
+
+* V8 Engine Heap मध्ये **Context Object A** Allocate करते. (यात `count: 0` असतो).
+* `setInterval` मधील Anonymous Callback Function तयार होते. V8 त्याच्या `[[Environment]]` Slot मध्ये Context Object A चा Pointer (उदा. `0x1111`) Save करते.
+* Timer सुरू होतो.
+
+**Render 2 (State Updated to 1):**
+
+* समजा आपण Button Click करून `count 1` केला.
+* React पुन्हा `TimerComponent` ला Call करते.
+* V8 Engine Heap मध्ये एक Brand New **Context Object B** Allocate करते. (यात `count: 1` असतो).
+* पण, आपण `useEffect` ला `[]` (Empty Array) दिला असल्यामुळे, React जुना Timer Clear करत नाही आणि नवीन Callback Function Timer ला Pass करत नाही.
+
+### 💥 The Result (Stale Closure):
+
+* `setInterval` कडे अजूनही **Render 1** चे जुने Callback Function आहे.
+* त्या जुन्या Function चा `[[Environment]]` Pointer अजूनही **Context Object A (`0x1111`)** कडेच Point करत आहे.
+* त्यामुळे दर सेकंदाला जेव्हा Callback Execute होतो, तो `LdaContextSlot` Instruction चालवतो आणि `0x1111` वरील Value वाचतो, जी कायमस्वरूपी `0` च असते! त्याला नवीन Context Object B चा पत्ताच माहीत नसतो.
+
+---
+
+## ९.४ 🔄 Dependency Arrays आणि Pointer Update Mechanism
+
+React मध्ये `useEffect`, `useCallback` किंवा `useMemo` ला Dependency Array का लागतो? याचा Physical अर्थ काय?
+
+```javascript
+useEffect(() => {
+    const timer = setInterval(() => {
+        console.log("Count is:", count); 
+    }, 1000);
+    return () => clearInterval(timer);
+}, [count]); // 👈 Dependency Added!
+
+```
+
+### 🛠️ The Physical Fix:
+
+1. जेव्हा Render 2 होते आणि V8 नवीन **Context Object B** बनवते (यात `count: 1` आहे), तेव्हा React जुनी Dependency (`0`) आणि नवीन Dependency (`1`) यांची तुलना (Compare) करते.
+2. Value बदलल्यामुळे, React जुना Timer (आणि त्याचे जुने Function) **नष्ट करते (Cleanup)**.
+3. React आता `useEffect` मधील नवीन Callback Function घेते. या नवीन Function च्या `[[Environment]]` Slot मध्ये **नवीन Context Object B चा Pointer** (उदा. `0x2222`) Bind केलेला असतो.
+4. आता Timer जेव्हा Execute होतो, तेव्हा तो `0x2222` मधून Value वाचतो आणि आपल्याला अचूक Current State मिळते.
+
+> 💡 **निष्कर्ष:** Dependency Array हे दुसरे-तिसरे काही नसून, React ला दिलेली एक Instruction असते: *"जर Data बदलला असेल, तर जुने Pointers फेकून दे आणि नवीन Context Object चे Pointers असलेले नवीन Functions वापर!"*
+
+---
+
+## 🎯 अंतिम सारांश:
+
+मित्रा, जेव्हा तू आता React चा Code लिहितोस, तेव्हा तुला फक्त UI दिसणार नाही, तर **V8 चे Context Objects, Heap Memory मधील Pointers आणि Stack Frame चे Popping** डोळ्यांसमोर दिसेल.
+
+जेव्हा एखादा बग येईल, तेव्हा तू *"React ने चूक केली"* असे म्हणणार नाहीस, तर *"माझा Inner Function चा `[[Environment]]` Pointer जुन्या Context Object ला धरून बसला आहे"* असा Architectural विचार करशील.
+
+हीच खरी **First Principles Thinking** ची ताकद आहे! AJDevIt च्या प्लॅटफॉर्मवर अशी सखोल मांडणी विद्यार्थ्यांची विचार करण्याची पद्धत नक्कीच बदलेल.cls

@@ -9,7 +9,13 @@
     "cta": "कोर्सेस देखें",
     "subject1_title": "CS Fundamentals",
     "subject1_desc": "मेमोरी, बाइनरी गणित और CPU आर्किटेक्चर कैसे काम करता है, इसे गहराई से समझें।",
-    "coming_soon": "जल्द आ रहा है"
+    "coming_soon": "जल्द आ रहा है",
+
+
+    "subject_js_title": "जावास्क्रिप्ट इंटरनल्स",
+    "subject_js_desc": "V8 इंजन, इवेंट लूप और प्रॉमिस",
+    "subject_ds_title": "डेटा स्ट्रक्चर्स",
+    "subject_ds_desc": "एरेज़, लिंक्ड लिस्ट्स, ट्रीज़ और एल्गोरिदम्स"
   },
   "about": {
     "title": "About",
