@@ -70,7 +70,7 @@ export default function TableOfContents() {
             } ${
               // ॲक्टिव्ह लिंक आणि होव्हरसाठी नवीन ब्रँड टोकन्स
               activeId === heading.id
-                ? "border-[var(--brand-main)] text-[var(--brand-main)] -ml-px"
+                ? "border-[var(--text-strong)] text-[var(--text-strong)] -ml-px"
                 : "border-transparent hover:border-[var(--text-muted)] hover:text-[var(--text-main)] -ml-px"
             }`}
           >

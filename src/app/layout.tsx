@@ -16,7 +16,15 @@ const mukta = Mukta({
 });
 const firaCode = Fira_Code({ subsets: ["latin"], variable: "--font-fira-code" });
 
-export const metadata: Metadata = { title: "AjitGurav", description: "Learn Coding in Marathi" };
+export const metadata: Metadata = {
+  title: "AjitGurav | Coding Tutorials",
+  description: "Learn coding in English Hindi and Marathi",
+  // 🔴 हा नवीन भाग ॲड कर
+  icons: {
+    icon: "/icon.png", // हे तुझ्या public फोल्डरमधील फाईलला पॉईंट करेल
+    apple: "/icon.png", // Apple मोबाईलसाठी
+  },
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const subjects = navigationConfig.subjects.map((s) => ({ name: s.title, slug: s.slug }));
