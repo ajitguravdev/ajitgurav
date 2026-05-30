@@ -1,5 +1,5 @@
 // src/components/markdown/UnicodeDiagram.tsx
-import React from 'react';
+import React from "react";
 
 // 🔴 हे Export करणे खूप महत्त्वाचे आहे (म्हणजे config फाईलमध्ये वापरता येईल)
 export interface StyleZone {
@@ -18,21 +18,27 @@ interface UnicodeDiagramProps {
   zones?: StyleZone[]; // 🔴 आता झोन्स थेट प्रॉप्समधून येतील
 }
 
-export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({ diagram, diagramId, zones = [] }) => {
-  const cleanDiagram = diagram.replace(/\r/g, '').replace(/\u00A0/g, ' ').replace(/^\n+|\n+$/g, '');
-  const lines = cleanDiagram.split('\n');
+export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({
+  diagram,
+  diagramId,
+  zones = [],
+}) => {
+  const cleanDiagram = diagram
+    .replace(/\r/g, "")
+    .replace(/\u00A0/g, " ")
+    .replace(/^\n+|\n+$/g, "");
+  const lines = cleanDiagram.split("\n");
 
   const getDefaultClass = (char: string): string => {
-    if (/[─│┌┐└┘├┤┬┴┼]/.test(char)) return 'text-slate-500 transition-colors duration-200'; 
-    if (/[→←↑↓↔↕↖↗↘↙⇒⇔>]/.test(char)) return 'text-sky-400 font-bold';
-    if (/[0-9०-९]/.test(char)) return 'text-amber-400 font-medium';
-    if (/[░▒▓█▄▀■]/.test(char)) return 'text-slate-600';
-    return 'text-slate-300';
+    if (/[─│┌┐└┘├┤┬┴┼]/.test(char)) return "text-slate-500 transition-colors duration-200";
+    if (/[→←↑↓↔↕↖↗↘↙⇒⇔>]/.test(char)) return "text-sky-400 font-bold";
+    if (/[0-9०-९]/.test(char)) return "text-amber-400 font-medium";
+    if (/[░▒▓█▄▀■]/.test(char)) return "text-slate-600";
+    return "text-slate-300";
   };
 
   return (
-    <div className="not-prose my-8 w-full max-w-full p-1 overflow-x-auto rounded-xl border border-[#30363d] bg-[#0d1117] shadow-xl relative group">
-      
+    <div className="not-prose my-8 w-full max-w-full p-1 overflow-x-auto rounded-xl border border-[#30363d] bg-[#1c2029]/75 shadow-xl relative group">
       {/* Header */}
       <div className="flex items-center px- py-1.5 ">
         <div className="flex items-center gap-2">
@@ -44,18 +50,20 @@ export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({ diagram, diagram
 
       {/* Diagram Body */}
       <div className="p-3 bg-black rounded-xl overflow-x-auto custom-scrollbar">
-        <pre 
+        <pre
           style={{ fontFamily: "'Consolas', 'Roboto Mono', 'Fira Code', 'Ubuntu Mono', monospace" }}
-          className="text-sm leading-[1.2] whitespace-pre selection:bg-blue-500/30 selection:text-white"
-        >
+          className="text-sm leading-[1.2] whitespace-pre selection:bg-blue-500/30 selection:text-white">
           {lines.map((line, rowIndex) => {
             const chars = Array.from(line);
             return (
               <div key={rowIndex} className="block">
                 {chars.map((char, colIndex) => {
-                  
                   const matchingZone = [...zones].reverse().find((z) => {
-                    const inBox = rowIndex >= z.rowStart && rowIndex <= z.rowEnd && colIndex >= z.colStart && colIndex <= z.colEnd;
+                    const inBox =
+                      rowIndex >= z.rowStart &&
+                      rowIndex <= z.rowEnd &&
+                      colIndex >= z.colStart &&
+                      colIndex <= z.colEnd;
                     if (!inBox) return false;
                     if (z.matchValue) {
                       if (z.matchValue instanceof RegExp) return z.matchValue.test(char);
@@ -65,7 +73,7 @@ export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({ diagram, diagram
                   });
 
                   const className = matchingZone ? matchingZone.className : getDefaultClass(char);
-                  
+
                   return (
                     <span key={colIndex} className={className} title={matchingZone?.tooltip}>
                       {char}
@@ -76,6 +84,14 @@ export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({ diagram, diagram
             );
           })}
         </pre>
+      </div>
+      <div className="mt-3  rounded-xl text-sm p-2">
+        <p>👉 या आकृतीत काय दाखवले आहे?</p>
+        <ul className="">
+          <li>या diagram मध्ये आपल्या घरातील एका साध्या switch चे उदाहरण दिले आहे.</li>
+          <li>जर switch ON असेल, तर लाईट चालू होतो आणि त्याची value 1 मानली जाते.</li>
+          <li>जर switch OFF असेल, तर लाईट बंद राहतो आणि त्याची value 0 मानली जाते.</li>
+        </ul>
       </div>
     </div>
   );

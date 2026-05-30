@@ -46,6 +46,16 @@ export const AlertBox = ({ type = "note", children }: any) => {
         borderColor: "border-emerald-200 dark:border-emerald-400/20",
       };
       break;
+    case "default":
+      config = {
+        icon: CheckCircle2,
+        iconColor: "text-emerald-500 dark:text-emerald-400",
+        // bgColor: "bg-emerald-50 dark:bg-emerald-400/10",
+        bgColor: "bg-[var(--bg-surface)]",
+        borderColor: "border-[var(--border-strong)]",
+        // borderColor: "border-emerald-200 dark:border-emerald-400/20",
+      };
+      break;
   }
 
   const IconCmp = config.icon;
@@ -53,7 +63,7 @@ export const AlertBox = ({ type = "note", children }: any) => {
   return (
     <div className={`my-[var(--space-lg)] flex gap-4 rounded-xl border p-5 transition-colors ${config.bgColor} ${config.borderColor}`}>
       {/* 🔴 आयकॉन: एकदम वरच्या बाजूला (Align Top) आणि योग्य रंगात */}
-      <IconCmp className={`mt-0.5 h-5 w-5 flex-shrink-0 ${config.iconColor}`} />
+      {/* <IconCmp className={`mt-0.5 h-5 w-5 flex-shrink-0 ${config.iconColor}`} /> */}
       
       {/* 🔴 मजकूर: इथे आपण आपला रेग्युलर text-main वापरला आहे, रंगीत नाही! */}
       <div className="w-full text-[15px] leading-relaxed text-[var(--text-main)] opacity-90 flex flex-col gap-3">

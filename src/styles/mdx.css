@@ -68,7 +68,7 @@
   .markdown-body ol {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem !important; 
+    gap: 0.5rem !important; 
   }
 
   /* =========================================
@@ -162,11 +162,12 @@
     position: absolute;
     left: 0;
     top: 0.6em; /* ओळीच्या बरोबर मध्यभागी */
-    height: 0.45rem;
-    width: 0.45rem;
-    border-radius: 50%;
-    border: 1.5px solid var(--brand-main); /* ब्रँड कलरची रिंग */
-    background-color: transparent; /* (जर पूर्ण भरलेला डॉट हवा असेल तर इथे var(--brand-main) लिही) */
+    height: 0.3rem;
+    width: 0.3rem;
+    /* border-radius: 50%; */
+    /* border: 1.5px solid var(--brand-main);  */
+    background-color:var(--text-muted); /* (जर पूर्ण भरलेला डॉट हवा असेल तर इथे var(--brand-main) लिही) */
+    /* background-color: transparent;  */
   }
 
   /* 3. Ordered Lists (ol - 1, 2, 3...) */
@@ -177,3 +178,4 @@
   .markdown-body ol > li {
     display: list-item !important;
   }
+  
