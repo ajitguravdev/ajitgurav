@@ -31,22 +31,19 @@ export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({ diagram, diagram
   };
 
   return (
-    <div className="not-prose my-8 w-full max-w-full overflow-x-auto rounded-xl border border-[#30363d] bg-[#0d1117] shadow-xl relative group">
+    <div className="not-prose my-8 w-full max-w-full p-1 overflow-x-auto rounded-xl border border-[#30363d] bg-[#0d1117] shadow-xl relative group">
       
       {/* Header */}
-      <div className="flex items-center px-4 py-3 bg-[#010409] border-b border-white/10">
+      <div className="flex items-center px- py-1.5 ">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-rose-500"></div>
-          <div className="w-3 h-3 rounded-full bg-amber-500"></div>
-          <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
           <span className="ml-4 text-xs font-mono text-slate-400 font-medium tracking-wide uppercase">
-            ASCII Visualizer : {diagramId}
+            Visual : {diagramId}
           </span>
         </div>
       </div>
 
       {/* Diagram Body */}
-      <div className="p-5 overflow-x-auto custom-scrollbar">
+      <div className="p-3 bg-black rounded-xl overflow-x-auto custom-scrollbar">
         <pre 
           style={{ fontFamily: "'Consolas', 'Roboto Mono', 'Fira Code', 'Ubuntu Mono', monospace" }}
           className="text-sm leading-[1.2] whitespace-pre selection:bg-blue-500/30 selection:text-white"

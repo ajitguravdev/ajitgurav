@@ -20,7 +20,7 @@ export default function SubNav({ subjects }: { subjects: { name: string; slug: s
             <Link
               key={sub.slug}
               href={`/${lang}/${sub.slug}`}
-              className={`px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${
+              className={`px-4 py-[14px] text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${
                 isActive
                   ? "border-[var(--brand-main)] text-[var(--brand-main)]"
                   : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-main)] hover:border-[var(--border-strong)]"

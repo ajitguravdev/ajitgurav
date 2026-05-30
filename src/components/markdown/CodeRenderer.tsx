@@ -58,18 +58,15 @@ export const CodeRenderer = ({ className, children, lessonZones, ...props }: any
 
     // ६. नॉर्मल कोडिंग (उदा. javascript)
     return (
-      <div className="not-prose mt-6 mb-8 w-full max-w-full rounded-xl overflow-hidden shadow-[var(--shadow-base)] border border-[var(--border-base)] bg-[#0d1117] relative group">
-        <div className="flex items-center px-4 py-3 bg-[#010409] border-b border-white/10">
+      <div className="not-prose p-1 mt-6 mb-8 w-full max-w-full rounded-xl overflow-hidden shadow-[var(--shadow-base)] border-2 border-[var(--border-base)] bg-[#0d1117] relative group">
+        <div className="flex items-center px-3 py-2 bg-[bg-surface]">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-rose-500"></div>
-            <div className="w-3 h-3 rounded-full bg-amber-500"></div>
-            <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-            <span className="ml-4 text-xs font-mono text-slate-400 font-medium tracking-wide uppercase">
+            <span className="text-xs font-mono text-slate-400 font-medium tracking-wide uppercase">
               {language}
             </span>
           </div>
         </div>
-        <div className="code-container overflow-x-auto custom-scrollbar p-5 w-full">
+        <div className="code-container border-2 rounded-xl border-[var(--border-base)] bg-black overflow-x-auto custom-scrollbar p-2 w-full">
           <SyntaxHighlighter
             language={language}
             style={vscDarkPlus as any}

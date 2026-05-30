@@ -1,5 +1,5 @@
 import React from "react";
-import { Lightbulb } from "lucide-react";
+import { Lightbulb,Info, AlertTriangle, XCircle, CheckCircle2 } from "lucide-react";
 
 // १. Intro Box (प्रस्तावना - मोठ्या अक्षरांसाठी)
 export const IntroBox = ({ children }: any) => (
@@ -11,30 +11,54 @@ export const IntroBox = ({ children }: any) => (
 
 // २. Alert Box (Unified Box - एकसमान डिझाईन, फक्त रंग बदलणार)
 export const AlertBox = ({ type = "note", children }: any) => {
-  let wrapperClass = "";
+  // Tailwind Docs च्या स्टाईलनुसार कॉन्फिगरेशन
+  let config = {
+    icon: Info,
+    iconColor: "text-sky-500 dark:text-sky-400",
+    bgColor: "bg-sky-50 dark:bg-sky-400/10",
+    borderColor: "border-sky-200 dark:border-sky-400/20",
+  };
 
   switch (type?.toLowerCase()) {
     case "warning":
-      wrapperClass = "bg-amber-50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200";
+      config = {
+        icon: AlertTriangle,
+        iconColor: "text-amber-500 dark:text-amber-400",
+        bgColor: "bg-amber-50 dark:bg-amber-400/10",
+        borderColor: "border-amber-200 dark:border-amber-400/20",
+      };
       break;
-    case "alert":
     case "danger":
-      wrapperClass = "bg-rose-50 dark:bg-rose-900/10 border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-200";
+    case "alert":
+      config = {
+        icon: XCircle,
+        iconColor: "text-rose-500 dark:text-rose-400",
+        bgColor: "bg-rose-50 dark:bg-rose-400/10",
+        borderColor: "border-rose-200 dark:border-rose-400/20",
+      };
       break;
     case "tip":
     case "success":
-      wrapperClass = "bg-emerald-50 dark:bg-emerald-900/10 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200";
-      break;
-    case "note":
-    default:
-      wrapperClass = "bg-blue-50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800 text-blue-900 dark:text-blue-200";
+      config = {
+        icon: CheckCircle2,
+        iconColor: "text-emerald-500 dark:text-emerald-400",
+        bgColor: "bg-emerald-50 dark:bg-emerald-400/10",
+        borderColor: "border-emerald-200 dark:border-emerald-400/20",
+      };
       break;
   }
 
+  const IconCmp = config.icon;
+
   return (
-    // इथे आपण solid 1px border आणि rounded-xl वापरून unified design दिली आहे
-    <div className={`p-5 sm:p-6 rounded-xl border shadow-sm my-8 transition-colors flex flex-col gap-3 leading-relaxed text-[16px] sm:text-base ${wrapperClass}`}>
-      {children}
+    <div className={`my-[var(--space-lg)] flex gap-4 rounded-xl border p-5 transition-colors ${config.bgColor} ${config.borderColor}`}>
+      {/* 🔴 आयकॉन: एकदम वरच्या बाजूला (Align Top) आणि योग्य रंगात */}
+      <IconCmp className={`mt-0.5 h-5 w-5 flex-shrink-0 ${config.iconColor}`} />
+      
+      {/* 🔴 मजकूर: इथे आपण आपला रेग्युलर text-main वापरला आहे, रंगीत नाही! */}
+      <div className="w-full text-[15px] leading-relaxed text-[var(--text-main)] opacity-90 flex flex-col gap-3">
+        {children}
+      </div>
     </div>
   );
 };
