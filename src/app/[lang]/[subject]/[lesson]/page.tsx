@@ -7,6 +7,34 @@ import { Book, Lock } from "lucide-react";
 import TableOfContents from "@/components/layout/TableOfContents";
 import MarkdownRenderer from "@/components/markdown/MarkdownRenderer";
 
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ lang: string; subject: string; lesson: string }> 
+}) {
+  const resolvedParams = await params;
+  const { lang, subject, lesson } = resolvedParams;
+  const lessonData = getLessonContent(lang, subject, lesson);
+
+  const title = lessonData?.frontmatter?.title || "Coding Lesson";
+  const description = lessonData?.frontmatter?.description || "AJDevIT वर मराठीतून कोडिंग शिका.";
+
+  return {
+    title: `${title} | AJDevIT`,
+    description: description,
+    openGraph: {
+      title: `${title} | AJDevIT`,
+      description: description,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | AJDevIT`,
+      description: description,
+    },
+  };
+}
+
 export default async function LessonPage({
   params,
 }: {
