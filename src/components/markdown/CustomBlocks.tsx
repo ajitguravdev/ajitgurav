@@ -82,7 +82,7 @@ export const TakeawayBox = ({ children }: any) => (
 
 // ४. List to Cards Wrapper
 export const ListCards = ({ children, cols = "2" }: any) => {
-  const gridClass = cols === "2" ? "lg:grid-cols-3 md:grid-cols-2" : "md:grid-cols-2";
+  const gridClass = cols === "3" ? "lg:grid-cols-3 md:grid-cols-2" : "md:grid-cols-2";
   return (
     <div className={`my-8 list-cards-wrapper text-[16px] ${gridClass}`}>
       {children}

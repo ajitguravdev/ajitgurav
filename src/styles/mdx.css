@@ -84,7 +84,7 @@
   /* List Cards CSS Magic */
   .list-cards-wrapper > ul {
     display: grid !important;
-    gap: 1.25rem !important;
+    gap: 1rem !important;
     padding: 0 !important;
     margin: 0 !important;
     list-style: none !important;
@@ -101,17 +101,15 @@
     background-color: var(--bg-surface) !important;
     border: 1px solid var(--border-base) !important;
     border-radius: 0.75rem !important;
-    padding: 1.25rem !important;
+    padding: 1rem !important;
     margin: 0 !important;
     box-shadow: var(--shadow-base) !important;
-    transition: all 0.3s ease !important;
-    border-left-width: 4px !important;
+   
     display: flex;
     flex-direction: column;
   }
 
   .list-cards-wrapper > ul > li:hover {
-    transform: translateY(-4px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   }
 
