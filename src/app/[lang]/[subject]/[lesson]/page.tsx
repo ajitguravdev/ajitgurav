@@ -48,11 +48,8 @@ export default async function LessonPage({
       
       {/* डावीकडील मुख्य Content */}
       <div className="bg-tech-grid flex-1 min-w-0 max-w-4xl px-4 sm:px-8 py-8 lg:py-12 pb-24">
-        {/* gemini ithe tuzyasathi ek suchana aahe mi khalil class madhil margins calssess kadhun takun varil pramane thevle aahe he barobar aahe ka karn lesson content cya ujavya bajula atirikt margin bast hoti mhnun ase kele */}
-      {/* <div className="bg-tech-grid flex-1 min-w-0 max-w-4xl mx-auto xl:mx-0 xl:mr-8 px-4 sm:px-8 py-8 lg:py-12 pb-24"> */}
-        
         {/* --- Page Header --- */}
-        <div className="mb-10 pb-6 border-b border-[var(--border-base)]">
+        <div className="mb-10 pb-6 border-b border-[var(--border-strong)]">
           <div className="flex items-center justify-between mb-4">
             
             <div className="flex items-center gap-2 text-[var(--text-muted)] font-semibold text-sm uppercase tracking-wider">

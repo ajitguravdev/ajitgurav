@@ -33,7 +33,7 @@ export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({
   const lines = cleanDiagram.split("\n");
 
   const getDefaultClass = (char: string): string => {
-    if (/[─│┌┐└┘├┤┬┴┼]/.test(char)) return "text-slate-500 transition-colors duration-200";
+    if (/[─│┌┐└┘├┤┬┴┼]╮╭╯╰/.test(char)) return "text-slate-500 transition-colors duration-200";
     if (/[→←↑↓↔↕↖↗↘↙⇒⇔>]/.test(char)) return "text-sky-400 font-bold";
     if (/[0-9०-९]/.test(char)) return "text-amber-400 font-medium";
     if (/[░▒▓█▄▀■]/.test(char)) return "text-slate-600";
@@ -41,11 +41,11 @@ export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({
   };
 
   return (
-    <div className="not-prose my-[var(--space-lg)] w-full max-w-full p-1 overflow-hidden rounded-xl border border-[#30363d] bg-[#1c2029]/75 shadow-xl relative group flex flex-col">
+    <div className="not-prose my-[var(--space-lg)] w-full max-w-full p-1 overflow-hidden rounded-xl border border-[#30363d] bg-[#1c2029] shadow-xl relative group flex flex-col">
       {/* Header */}
       <div className="flex items-center px-2 py-1.5 ">
         <div className="flex items-center gap-2">
-          <span className="ml-2 text-xs font-mono text-slate-400 font-medium tracking-wide uppercase">
+          <span className="ml-2 text-xs font-mono text-[var(--text-muted)] font-medium tracking-wide uppercase">
             Visual : {diagramId}
           </span>
         </div>
@@ -100,7 +100,7 @@ export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({
 
       {/* 🔴 Dynamic Caption Area (जर ||| नंतर मजकूर असेल तरच दिसेल) */}
       {caption && (
-        <div className="mt-2 text-[var(--text-main)] bg-[var(--bg-surface)] rounded-lg text-[14.5px] p-4 border border-[var(--border-base)] leading-relaxed">
+        <div className="mt-2 text-[var(--text-main)] bg-[var(--bg-surface)] rounded-lg text-[14.5px] p-4 border border-[var(--border-base)] leading-relaxed [&>p:not(:last-child)]:mb-3 [&>ul]:list-disc [&>ul]:ml-5 [&>ul>li]:mb-1 [&>ol]:list-decimal [&>ol]:ml-5">
           <ReactMarkdown>{caption}</ReactMarkdown>
         </div>
       )}

@@ -15,7 +15,7 @@ export const CodeRenderer = ({ className, children, lessonZones, ...props }: any
 
   // 🔴 जादुई लॉजिक: ||| च्या आधारे कोड आणि स्पष्टीकरण वेगळे करणे
   const parts = fullContent.split("|||");
-  const rawCode = parts[0].trim();
+  const rawCode = parts[0].replace(/^\n+|\n+$/g, ""); // फक्त रिकाम्या ओळी काढेल, spaces नाही!
   const caption = parts.length > 1 ? parts[1].trim() : null;
 
   // कॉपी बटण स्टेट
@@ -108,7 +108,7 @@ export const CodeRenderer = ({ className, children, lessonZones, ...props }: any
 
         {/* 🔴 Bottom Caption Area (जर ||| नंतर मजकूर असेल तरच दिसेल) */}
         {caption && (
-          <div className="border-t border-white/10 bg-[#0d1117] px-5 py-4 text-[14.5px] leading-relaxed text-[var(--text-muted)] dark:text-slate-300">
+          <div className="border-t border-white/10 bg-[#0d1117] px-5 py-4 text-[14.5px] leading-relaxed text-[var(--text-muted)] dark:text-slate-300 [&>p:not(:last-child)]:mb-3 [&>ul]:list-disc [&>ul]:ml-5 [&>ul>li]:mb-1 [&>ol]:list-decimal [&>ol]:ml-5">
             <ReactMarkdown>{caption}</ReactMarkdown>
           </div>
         )}

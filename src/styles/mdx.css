@@ -17,6 +17,16 @@
     font-family: 'Mukta', sans-serif;
   }
 
+  /* हेडिंग्जसाठी Scroll Margin सेट करणे (Fixed Navbar च्या उंचीइतके) */
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4 {
+  /* तुझा नॅव्हिगेटर + हेडर अंदाजे ६.५rem (१०४px) किंवा ८०-१००px चा असेल, 
+     त्यामुळे आपण इथे थोडी जास्तीची जागा (उदा. 120px) सोडत आहोत. */
+  scroll-margin-top: 120px; 
+}
+
   /* =========================================
      ✨ THE PERFECT MARKDOWN DESIGN SYSTEM ✨
      (Based on Flexbox + Gap Architecture)
