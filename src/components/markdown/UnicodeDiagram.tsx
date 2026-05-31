@@ -9,7 +9,7 @@ export interface StyleZone {
   colEnd: number;
   className: string;
   matchValue?: string; // 🔴 RegExp ऐवजी फक्त string
-  isRegex?: boolean;   // 🔴 हा नवीन फ्लॅग ॲड केला
+  isRegex?: boolean; // 🔴 हा नवीन फ्लॅग ॲड केला
   tooltip?: string;
 }
 
@@ -52,48 +52,52 @@ export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({
       </div>
 
       {/* Diagram Body */}
-      <div className="p-3 bg-black rounded-xl overflow-x-auto custom-scrollbar">
-        <pre
-          style={{ fontFamily: "'Consolas', 'Roboto Mono', 'Fira Code', 'Ubuntu Mono', monospace" }}
-          className="text-sm leading-[1.2] whitespace-pre selection:bg-blue-500/30 selection:text-white">
-          {lines.map((line, rowIndex) => {
-            const chars = Array.from(line);
-            return (
-              <div key={rowIndex} className="block">
-                {chars.map((char, colIndex) => {
-                  const matchingZone = [...zones].reverse().find((z) => {
-                    const inBox =
-                      rowIndex >= z.rowStart &&
-                      rowIndex <= z.rowEnd &&
-                      colIndex >= z.colStart &&
-                      colIndex <= z.colEnd;
-                    
-                    if (!inBox) return false;
-                    
-                    // 🔴 स्ट्रिंगला RegExp मध्ये कन्व्हर्ट करण्याचे लॉजिक
-                    if (z.matchValue) {
-                      if (z.isRegex) {
-                        return new RegExp(z.matchValue).test(char);
+      <div className="p-1.5 bg-black rounded-xl">
+        <div className="p-3 overflow-x-auto custom-scrollbar">
+          <pre
+            style={{
+              fontFamily: "'Consolas', 'Roboto Mono', 'Fira Code', 'Ubuntu Mono', monospace",
+            }}
+            className="text-sm leading-[1.2] whitespace-pre selection:bg-blue-500/30 selection:text-white">
+            {lines.map((line, rowIndex) => {
+              const chars = Array.from(line);
+              return (
+                <div key={rowIndex} className="block">
+                  {chars.map((char, colIndex) => {
+                    const matchingZone = [...zones].reverse().find((z) => {
+                      const inBox =
+                        rowIndex >= z.rowStart &&
+                        rowIndex <= z.rowEnd &&
+                        colIndex >= z.colStart &&
+                        colIndex <= z.colEnd;
+
+                      if (!inBox) return false;
+
+                      // 🔴 स्ट्रिंगला RegExp मध्ये कन्व्हर्ट करण्याचे लॉजिक
+                      if (z.matchValue) {
+                        if (z.isRegex) {
+                          return new RegExp(z.matchValue).test(char);
+                        }
+                        return z.matchValue === char;
                       }
-                      return z.matchValue === char;
-                    }
-                    return true;
-                  });
+                      return true;
+                    });
 
-                  const className = matchingZone ? matchingZone.className : getDefaultClass(char);
+                    const className = matchingZone ? matchingZone.className : getDefaultClass(char);
 
-                  return (
-                    <span key={colIndex} className={className} title={matchingZone?.tooltip}>
-                      {char}
-                    </span>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </pre>
+                    return (
+                      <span key={colIndex} className={className} title={matchingZone?.tooltip}>
+                        {char}
+                      </span>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </pre>
+        </div>
       </div>
-      
+
       {/* 🔴 Dynamic Caption Area (जर ||| नंतर मजकूर असेल तरच दिसेल) */}
       {caption && (
         <div className="mt-2 text-[var(--text-main)] bg-[var(--bg-surface)] rounded-lg text-[14.5px] p-4 border border-[var(--border-base)] leading-relaxed">
