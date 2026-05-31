@@ -1,27 +1,30 @@
 // src/components/markdown/UnicodeDiagram.tsx
 import React from "react";
+import ReactMarkdown from "react-markdown"; // 🔴 Markdown रेंडर करण्यासाठी
 
-// 🔴 हे Export करणे खूप महत्त्वाचे आहे (म्हणजे config फाईलमध्ये वापरता येईल)
 export interface StyleZone {
   rowStart: number;
   colStart: number;
   rowEnd: number;
   colEnd: number;
   className: string;
-  matchValue?: RegExp | string;
+  matchValue?: string; // 🔴 RegExp ऐवजी फक्त string
+  isRegex?: boolean;   // 🔴 हा नवीन फ्लॅग ॲड केला
   tooltip?: string;
 }
 
 interface UnicodeDiagramProps {
   diagram: string;
   diagramId: string;
-  zones?: StyleZone[]; // 🔴 आता झोन्स थेट प्रॉप्समधून येतील
+  zones?: StyleZone[];
+  caption?: string | null; // 🔴 नवीन प्रॉप (स्पष्टीकरणासाठी)
 }
 
 export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({
   diagram,
   diagramId,
   zones = [],
+  caption, // 🔴
 }) => {
   const cleanDiagram = diagram
     .replace(/\r/g, "")
@@ -38,11 +41,11 @@ export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({
   };
 
   return (
-    <div className="not-prose my-8 w-full max-w-full p-1 overflow-x-auto rounded-xl border border-[#30363d] bg-[#1c2029]/75 shadow-xl relative group">
+    <div className="not-prose my-[var(--space-lg)] w-full max-w-full p-1 overflow-hidden rounded-xl border border-[#30363d] bg-[#1c2029]/75 shadow-xl relative group flex flex-col">
       {/* Header */}
-      <div className="flex items-center px- py-1.5 ">
+      <div className="flex items-center px-2 py-1.5 ">
         <div className="flex items-center gap-2">
-          <span className="ml-4 text-xs font-mono text-slate-400 font-medium tracking-wide uppercase">
+          <span className="ml-2 text-xs font-mono text-slate-400 font-medium tracking-wide uppercase">
             Visual : {diagramId}
           </span>
         </div>
@@ -64,9 +67,14 @@ export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({
                       rowIndex <= z.rowEnd &&
                       colIndex >= z.colStart &&
                       colIndex <= z.colEnd;
+                    
                     if (!inBox) return false;
+                    
+                    // 🔴 स्ट्रिंगला RegExp मध्ये कन्व्हर्ट करण्याचे लॉजिक
                     if (z.matchValue) {
-                      if (z.matchValue instanceof RegExp) return z.matchValue.test(char);
+                      if (z.isRegex) {
+                        return new RegExp(z.matchValue).test(char);
+                      }
                       return z.matchValue === char;
                     }
                     return true;
@@ -85,14 +93,13 @@ export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({
           })}
         </pre>
       </div>
-      <div className="mt-3  rounded-xl text-sm p-2">
-        <p>👉 या आकृतीत काय दाखवले आहे?</p>
-        <ul className="">
-          <li>या diagram मध्ये आपल्या घरातील एका साध्या switch चे उदाहरण दिले आहे.</li>
-          <li>जर switch ON असेल, तर लाईट चालू होतो आणि त्याची value 1 मानली जाते.</li>
-          <li>जर switch OFF असेल, तर लाईट बंद राहतो आणि त्याची value 0 मानली जाते.</li>
-        </ul>
-      </div>
+      
+      {/* 🔴 Dynamic Caption Area (जर ||| नंतर मजकूर असेल तरच दिसेल) */}
+      {caption && (
+        <div className="mt-2 text-[var(--text-main)] bg-[var(--bg-surface)] rounded-lg text-[14.5px] p-4 border border-[var(--border-base)] leading-relaxed">
+          <ReactMarkdown>{caption}</ReactMarkdown>
+        </div>
+      )}
     </div>
   );
 };

@@ -51,8 +51,8 @@ export const lessonZones: Record<string, StyleZone[]> = {
   "byte-groups": [
     { rowStart: 0, colStart: 1, rowEnd: 0, colEnd: 45, className: 'text-pink-400 font-bold' },
     // 🔴 इथे 'matchValue' वापरले आहे, आणि आपण ते इंटरफेसमध्ये दिल्यामुळे आता एरर येणार नाही
-    { rowStart: 1, colStart: 2, rowEnd: 1, colEnd: 63, matchValue: /[1१]/, className: 'text-emerald-400 font-bold' },
-    { rowStart: 1, colStart: 2, rowEnd: 1, colEnd: 63, matchValue: /[0०]/, className: 'text-rose-400' },
+    { rowStart: 1, colStart: 2, rowEnd: 1, colEnd: 63, matchValue: "/[1१]/", isRegex: true, className: 'text-emerald-400 font-bold' },
+    { rowStart: 1, colStart: 2, rowEnd: 1, colEnd: 63, matchValue: "/[0०]/", isRegex: true, className: 'text-rose-400' },
     { rowStart: 3, colStart: 9, rowEnd: 3, colEnd: 24, className: 'text-emerald-400 font-bold bg-emerald-500/10 px-1 rounded' }, 
     { rowStart: 3, colStart: 47, rowEnd: 3, colEnd: 62, className: 'text-sky-400 font-bold bg-sky-500/10 px-1 rounded' }
   ],
@@ -67,8 +67,8 @@ export const lessonZones: Record<string, StyleZone[]> = {
   // ८. Memory Address Table
   "memory-table": [
     { rowStart: 1, colStart: 3, rowEnd: 1, colEnd: 65, className: 'text-sky-400' }, 
-    { rowStart: 3, colStart: 23, rowEnd: 6, colEnd: 46, matchValue: /[1१]/, className: 'text-emerald-400 font-black animate-pulse' },
-    { rowStart: 3, colStart: 23, rowEnd: 6, colEnd: 46, matchValue: /[0०]/, className: 'text-rose-400 font-medium' },
+    { rowStart: 3, colStart: 23, rowEnd: 6, colEnd: 46, matchValue: "/[1१]/", isRegex: true, className: 'text-emerald-400 font-black animate-pulse' },
+    { rowStart: 3, colStart: 23, rowEnd: 6, colEnd: 46, matchValue: "/[0०]/", isRegex: true, className: 'text-rose-400 font-medium' },
     { rowStart: 3, colStart: 3, rowEnd: 6, colEnd: 12, className: 'text-amber-400 font-mono' },
     { rowStart: 3, colStart: 51, rowEnd: 6, colEnd: 66, className: 'text-pink-400 font-medium' },
     { rowStart: 3, colStart: 48, rowEnd: 6, colEnd: 48, className: 'text-purple-400 animate-pulse' }
