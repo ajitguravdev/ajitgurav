@@ -2,10 +2,9 @@
 import { ImageResponse } from 'next/og';
 import { getLessonContent } from "@/lib/content";
 
-// Next.js ला सांगतो की हे Edge वर (अतिशय वेगाने) रन करायचे आहे
-export const runtime = 'edge';
+// 🔴 आपण 'edge' काढून टाकले आहे जेणेकरून Next.js फाईल्स वाचू शकेल.
+// (बाय-डिफॉल्ट Next.js आता Node.js रनटाइम वापरेल)
 
-// सोशल मीडिया कार्डची स्टँडर्ड साईझ
 export const alt = 'AJDevIT Lesson Cover';
 export const size = {
   width: 1200,
@@ -13,9 +12,10 @@ export const size = {
 };
 export const contentType = 'image/png';
 
-export default async function Image({ params }: { params: { lang: string; subject: string; lesson: string } }) {
-  // पॅरामीटर्स अनरॅप करणे
-  const { lang, subject, lesson } = params;
+export default async function Image({ params }: { params: Promise<{ lang: string; subject: string; lesson: string }> }) {
+  // 🔴 Next.js 16 (Turbopack) च्या नवीन नियमानुसार params हे Promise असते, त्यामुळे त्याला await करणे गरजेचे आहे.
+  const resolvedParams = await params;
+  const { lang, subject, lesson } = resolvedParams;
   
   // धड्याचा डेटा मिळवणे (टायटलसाठी)
   const lessonData = getLessonContent(lang, subject, lesson);
@@ -24,10 +24,9 @@ export default async function Image({ params }: { params: { lang: string; subjec
 
   return new ImageResponse(
     (
-      // 🔴 इथे आपण HTML आणि CSS वापरून आपला 'साचा' (Template) डिझाईन करत आहोत
       <div
         style={{
-          background: 'linear-gradient(to bottom right, #030712, #10141e)', // तुझा डार्क Slate बॅकग्राउंड
+          background: 'linear-gradient(to bottom right, #030712, #10141e)', 
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -35,23 +34,18 @@ export default async function Image({ params }: { params: { lang: string; subjec
           alignItems: 'center',
           justifyContent: 'center',
           padding: '80px',
-          borderTop: '16px solid #0ea5e9', // Brand Main (Sky) कलरची टॉप बॉर्डर
+          borderTop: '16px solid #0ea5e9', 
         }}
       >
-        {/* कार्डचा मुख्य भाग */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '20px' }}>
-          
           <h2 style={{ color: '#94a3b8', fontSize: 36, letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>
             {subjectName} TUTORIAL
           </h2>
-          
           <h1 style={{ color: '#ffffff', fontSize: 72, fontWeight: 900, lineHeight: 1.2, margin: 0, padding: '0 40px' }}>
             {title}
           </h1>
-          
         </div>
 
-        {/* तळाचा ब्रँडिंग भाग */}
         <div style={{ display: 'flex', position: 'absolute', bottom: 50, alignItems: 'center' }}>
           <div style={{ fontSize: 40, color: '#0ea5e9', fontWeight: 'bold', letterSpacing: '0.05em' }}>
             AJDevIT
