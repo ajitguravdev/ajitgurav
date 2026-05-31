@@ -52,7 +52,7 @@ export const UnicodeDiagram: React.FC<UnicodeDiagramProps> = ({
       </div>
 
       {/* Diagram Body */}
-      <div className="p-1.5 bg-black rounded-xl">
+      <div className="p-1.5 bg-black rounded-xl border border-[var(--border-strong)]">
         <div className="p-3 overflow-x-auto custom-scrollbar">
           <pre
             style={{

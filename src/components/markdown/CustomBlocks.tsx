@@ -58,7 +58,8 @@ export const AlertBox = ({ type = "note", children }: any) => {
   // const IconCmp = config.icon;
 
   return (
-    <div className={`my-[var(--space-lg)] flex gap-4 rounded-xl border p-5 transition-colors ${config.bgColor} ${config.borderColor}`}>
+    <div
+      className={`my-[var(--space-lg)] flex gap-4 rounded-xl border p-5 transition-colors ${config.bgColor} ${config.borderColor}`}>
       {/* 🔴 मजकूर: इथे आपण आपला रेग्युलर text-main वापरला आहे, रंगीत नाही! */}
       <div className="w-full text-[15px] leading-relaxed text-[var(--text-main)] opacity-90 flex flex-col gap-3">
         {children}
@@ -69,13 +70,15 @@ export const AlertBox = ({ type = "note", children }: any) => {
 
 // ३. Takeaway Box (खास ब्रँड कलरची पातळ बॉर्डर आणि आयकॉन)
 export const TakeawayBox = ({ children }: any) => (
-  <div className="mt-12 mb-8 bg-white dark:bg-[#0d1117] p-6 sm:p-8 rounded-2xl border border-[var(--brand-main)] shadow-lg relative overflow-hidden">
-    <div className="absolute top-0 left-0 w-full h-1 bg-[var(--brand-main)] opacity-80"></div>
-    <h3 className="text-xl font-bold text-[var(--brand-main)] flex items-center gap-2 mb-4 mt-0">
-      <Lightbulb className="w-6 h-6" /> 💡 Technical Key Takeaway
-    </h3>
-    <div className="text-[var(--text-main)] font-medium leading-relaxed flex flex-col gap-3">
-      {children}
+  <div className="mt-12 mb-8 bg-gradient-to-r from-[var(--brand-main)]/20 to-blue-50  dark:to-blue-900/20 p-1 rounded-2xl shadow-lg relative overflow-hidden">
+    <div className="bg-[var(--bg-elevated)] p-6 sm:p-8 rounded-xl h-full">
+      {/* <div className="absolute top-0 left-0 w-full h-1 bg-[var(--brand-main)] opacity-80"></div>
+      <h3 className="text-xl font-bold text-[var(--brand-main)] flex items-center gap-2 mb-4 mt-0">
+        <Lightbulb className="w-6 h-6" /> 💡 Technical Key Takeaway
+      </h3> */}
+      <div className="text-[var(--text-muted)] font-medium leading-relaxed flex flex-col gap-3">
+        {children}
+      </div>
     </div>
   </div>
 );
@@ -83,9 +86,5 @@ export const TakeawayBox = ({ children }: any) => (
 // ४. List to Cards Wrapper
 export const ListCards = ({ children, cols = "2" }: any) => {
   const gridClass = cols === "3" ? "lg:grid-cols-3 md:grid-cols-2" : "md:grid-cols-2";
-  return (
-    <div className={`my-8 list-cards-wrapper text-[16px] ${gridClass}`}>
-      {children}
-    </div>
-  );
+  return <div className={`my-8 list-cards-wrapper text-[16px] ${gridClass}`}>{children}</div>;
 };

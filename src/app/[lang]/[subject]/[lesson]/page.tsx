@@ -7,6 +7,7 @@ import { Book, Lock } from "lucide-react";
 import TableOfContents from "@/components/layout/TableOfContents";
 import MarkdownRenderer from "@/components/markdown/MarkdownRenderer";
 
+// 🔴 हे फंक्शन इथेच असणे गरजेचे आहे (SEO आणि शेअरिंगसाठी)
 export async function generateMetadata({ 
   params 
 }: { 
@@ -57,18 +58,24 @@ export default async function LessonPage({
     if (found) currentLessonConfig = found;
   });
 
-  // 🔴 २. डायनॅमिक Config इम्पोर्ट (येथे आपण त्या धड्याचे डायग्राम झोन्स मिळवत आहोत)
+  // 🔴 २. डायनॅमिक Config इम्पोर्ट (येथे आपण झोन्स आणि ॲनिमेशन कंपोनंट्स मिळवत आहोत)
   let lessonZones = {};
+  let visualComponents = {}; // ॲनिमेशन्स साठवण्यासाठी नवीन व्हेरिएबल
+
   try {
-    // विषय आणि धड्याच्या नावानुसार config फाईल शोधतो (उदा. config/lessons/javascript/v8-engine)
-    // '.ts' एक्सटेन्शन लिहायची गरज नाही, Next.js ते आपोआप शोधेल
     const configModule = await import(`@/config/lessons/${subject}/${lesson}`);
-    if (configModule && configModule.lessonZones) {
-      lessonZones = configModule.lessonZones;
+    
+    // फाईलमधील lessonZones वेगळे काढणे आणि उरलेले सर्व (rest) ॲनिमेशन्स म्हणून घेणे
+    const { lessonZones: importedZones, ...restComponents } = configModule;
+    
+    if (importedZones) {
+      lessonZones = importedZones;
     }
+    // उरलेले सर्व एक्सपोर्ट्स (उदा. AI ॲनिमेशन्स) आपण MDX ला पाठवण्यासाठी सेव्ह करू
+    visualComponents = restComponents; 
+
   } catch (error) {
-    // जर config फाईल नसेल, तर क्रॅश होणार नाही. फक्त बॅकग्राउंडला मेसेज देईल.
-    // console.log(`No config file found for ${subject}/${lesson}, using default ASCII.`);
+    // जर config फाईल नसेल, तर क्रॅश होणार नाही.
   }
 
   return (
@@ -103,7 +110,6 @@ export default async function LessonPage({
         </div>
 
         {/* --- MDX Content --- */}
-        {/* 🔴 'prose-lg' काढून टाकला आहे आणि '!' (Important) वापरून डार्क मोडचे रंग फिक्स केले आहेत */}
         <div className="mdx-wrapper prose max-w-none break-words
           prose-headings:!text-[var(--text-main)] prose-headings:font-bold
           prose-p:!text-[var(--text-muted)] prose-p:leading-relaxed
@@ -113,8 +119,12 @@ export default async function LessonPage({
           prose-blockquote:border-l-[var(--brand-main)] prose-blockquote:bg-[var(--bg-surface)] prose-blockquote:!text-[var(--text-main)]
           prose-hr:border-[var(--border-base)] dark:prose-invert"
         >
-          {/* 🔴 ३. इथे MarkdownRenderer ला lessonZones पाठवले आहेत */}
-          <MarkdownRenderer content={lessonData.content} lessonZones={lessonZones} />
+          {/* 🔴 ३. इथे आपण lessonZones सोबत visualComponents सुद्धा पाठवत आहोत */}
+          <MarkdownRenderer 
+             content={lessonData.content} 
+             lessonZones={lessonZones} 
+             visualComponents={visualComponents} 
+          />
         </div>
         
       </div>

@@ -5,7 +5,7 @@ import { getLessonContent } from "@/lib/content";
 // 🔴 आपण 'edge' काढून टाकले आहे जेणेकरून Next.js फाईल्स वाचू शकेल.
 // (बाय-डिफॉल्ट Next.js आता Node.js रनटाइम वापरेल)
 
-export const alt = 'AJDevIT Lesson Cover';
+export const alt = 'AjitGurav Lesson Cover';
 export const size = {
   width: 1200,
   height: 630,
